@@ -30,7 +30,6 @@ public class Interaction : MonoBehaviour
 
     private bool IsGameInteractive(RaycastHit hit)
     {
-
         if (hit.collider.TryGetComponent(out HintTrigger interaction) == false)
             return false;
 

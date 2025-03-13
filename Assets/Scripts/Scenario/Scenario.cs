@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using UnityEngine;
 
 public enum GameInteractions
@@ -8,6 +9,7 @@ public enum GameInteractions
     SitOnLogWood,
     OldecHeheVoice,
     SourceStenchFound,
+    TakeItem,
 }
 
 public class Scenario : MonoBehaviour
@@ -40,8 +42,7 @@ public class Scenario : MonoBehaviour
     [SerializeField] private AudioClip _questionGetOutForest;
     [SerializeField] private AudioClip _answerFollowMoth;
 
-    private void Start() =>
-        StartAwakening();
+    private List<InteractiveTrigger> _itemsInInventory = new();
 
     private void OnEnable()
     {
@@ -52,7 +53,7 @@ public class Scenario : MonoBehaviour
     private void OnDisable()
     {
         _player.InteractionButtonPressed -= OnInteraction;
-        _player.Triggered += HandleState;
+        _player.Triggered -= HandleState;
     }
 
     private void OnInteraction() =>
@@ -76,8 +77,13 @@ public class Scenario : MonoBehaviour
             case GameInteractions.SitOnLogWood:
                 MoveCloserToLogWood(interactiveTrigger);
                 break;
+
             case GameInteractions.SourceStenchFound:
                 AwardAchievementFindingSourceSmell(interactiveTrigger);
+                break;
+
+            case GameInteractions.TakeItem:
+                TakeItem(interactiveTrigger);
                 break;
 
             default:
@@ -104,12 +110,12 @@ public class Scenario : MonoBehaviour
     private void ShowTaskLookAround()
     {
         _taskLookAround.Enable();
-        _oldecHeheTrigger.Enable();
+        _oldecHeheTrigger.EnableCollider();
     }
 
     private void OnPlayOldecHehe(InteractiveTrigger trigger)
     {
-        trigger.Disable();
+        trigger.DisableCollider();
         _taskLookAround.Disable();
         _oldec.PlaySound(_hehe_voice, PlayThoughtsTolkingOldec);
     }
@@ -119,13 +125,13 @@ public class Scenario : MonoBehaviour
 
     private void EnableOldecHintTrigger()
     {
-        _oldecHintTrigger.Enable();
+        _oldecHintTrigger.EnableCollider();
         _taskTalkOldMan.Enable();
     }
 
     private void AskFirstQuestionSmell(InteractiveTrigger trigger)
     {
-        trigger.Disable();
+        trigger.DisableCollider();
         _taskTalkOldMan.Disable();
         _player.PlaySound(_firstQuestionSmell, ListenAnswerThisLongHistory);
     }
@@ -136,12 +142,12 @@ public class Scenario : MonoBehaviour
     private void EnableLogWood()
     {
         _taskFindPlaceSit.Enable();
-        _logWood.Enable();    
+        _logWood.EnableCollider();    
     }
 
     private void MoveCloserToLogWood(InteractiveTrigger trigger)
     {
-        trigger.Disable();
+        trigger.DisableCollider();
         _taskFindPlaceSit.Disable();
         _player.DisableControl();
         _player.DisableCollider();
@@ -187,8 +193,15 @@ public class Scenario : MonoBehaviour
     private void AwardAchievementFindingSourceSmell(InteractiveTrigger trigger)
     {
         _taskFollowButterfly.Disable();
-        trigger.Disable();
+        trigger.DisableCollider();
         _mothSpline.Disable();
         _winPanel.Enable();
+    }
+
+    private void TakeItem(InteractiveTrigger trigger)
+    {
+        trigger.Hide();
+        _itemsInInventory.Add(trigger);
+        Debug.Log("Подобрана записка");
     }
 }

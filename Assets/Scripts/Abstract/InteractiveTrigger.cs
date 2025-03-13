@@ -10,9 +10,15 @@ public class InteractiveTrigger : MonoBehaviour
     private void Awake() =>
         _triggerCollider = GetComponent<Collider>();
 
-    public void Enable() =>
+    public void EnableCollider() =>
         _triggerCollider.enabled = true;
 
-    public void Disable() =>
+    public void DisableCollider() =>
         _triggerCollider.enabled = false;
+
+    public void Hide() =>
+        gameObject.SetActive(false);
+
+    public void Show() =>
+        gameObject.SetActive(false);
 }

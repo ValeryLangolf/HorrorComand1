@@ -10,7 +10,7 @@ public class SpeedSmoother
 
     public float Smooth(float value)
     {
-        _value = Mathf.MoveTowards(_value, value, Time.fixedDeltaTime * _speedChangeRate);
+        _value = Mathf.MoveTowards(_value, value, Time.deltaTime * _speedChangeRate);
 
         return _value;
     }        

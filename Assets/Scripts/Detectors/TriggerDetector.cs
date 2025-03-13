@@ -14,7 +14,7 @@ public class TriggerDetector : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.gameObject.TryGetComponent(out TouchTrigger trigger))
+        if (other.TryGetComponent(out TouchTrigger trigger))
             TouchTriggered?.Invoke(trigger);
 
         if (other.TryGetComponent(out TeleportMarker teleportMarker))

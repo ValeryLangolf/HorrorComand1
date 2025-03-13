@@ -61,10 +61,10 @@ public class Player : Character
     {
         _triggerDetector.TouchTriggered -= HandleTrigger;
         _animationEvents.LeftFoodSteppedOn -= OnSoundLeftStep;
-        _animationEvents.RightFoodSteppedOn += OnSoundRightStep;
+        _animationEvents.RightFoodSteppedOn -= OnSoundRightStep;
     }
 
-    private void FixedUpdate()
+    private void Update()
     {
         float right = 0;
         float forward = 0;

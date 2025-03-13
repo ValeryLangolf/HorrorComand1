@@ -24,7 +24,7 @@ public class Mover
             0, 
             NormalizeVerticalSpeed(valueForward)));
 
-        _rigidbody.MovePosition(_rigidbody.position + _speed * Time.fixedDeltaTime * worldDirection);
+        _rigidbody.MovePosition(_rigidbody.position + _speed * Time.deltaTime * worldDirection);
     }
 
     private float NormalizeHorizontalSpeed(float speed) =>
