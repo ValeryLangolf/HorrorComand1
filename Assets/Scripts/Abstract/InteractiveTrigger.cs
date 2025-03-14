@@ -1,5 +1,6 @@
 using UnityEngine;
 
+[RequireComponent(typeof(Collider))]
 public class InteractiveTrigger : MonoBehaviour
 {
     [SerializeField] private GameInteractions _name;

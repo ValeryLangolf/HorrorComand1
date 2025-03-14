@@ -8,6 +8,7 @@ public class PlayerInput
     private const KeyCode _jump = KeyCode.Space;
     private const KeyCode _shift = KeyCode.LeftShift;
     private const KeyCode _interaction = KeyCode.E;
+    private const KeyCode _book = KeyCode.Tab;
 
     public bool IsJumpPressed() =>
         Input.GetKeyDown(_jump);
@@ -17,7 +18,7 @@ public class PlayerInput
         valueRight = Input.GetAxis(Horizontal);
         valueForward = Input.GetAxis(Vertical);
 
-        return valueRight == 0 && valueForward == 0 ? false : true;
+        return valueRight != 0 || valueForward != 0;
     }
 
     public bool IsShift() =>
@@ -25,4 +26,7 @@ public class PlayerInput
 
     public bool IsInteractionButtonPressed() =>
         Input.GetKeyDown(_interaction);
+
+    public bool IsBookPressed() =>
+        Input.GetKeyDown(_book);
 }

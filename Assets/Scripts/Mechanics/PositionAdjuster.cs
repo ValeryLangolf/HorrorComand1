@@ -3,7 +3,7 @@ using UnityEngine;
 
 public class PositionAdjuster : MonoBehaviour
 {
-    private const float RotationSensitivity = 500f;
+    private const float RotationSensitivity = 400f;
 
     private readonly WaitForFixedUpdate _wait = new();
 

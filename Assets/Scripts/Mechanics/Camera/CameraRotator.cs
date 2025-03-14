@@ -23,7 +23,6 @@ public class CameraRotator : MonoBehaviour
     {
         currentAngleY += Input.GetAxis(MouseX) * _sensitivity;
         currentAngleX -= Input.GetAxis(MouseY) * _sensitivity;
-
         currentAngleX = Mathf.Clamp(currentAngleX, -_verticalLimit, _verticalLimit);
     }
 

@@ -4,7 +4,7 @@ public class GroundDetector : MonoBehaviour
 {
     private const float Distance = 0.14f;
 
-    private readonly RaycastHit[] _hits = new RaycastHit[10];
+    private readonly RaycastHit[] _hits = new RaycastHit[4];
 
     public bool IsGround()
     {

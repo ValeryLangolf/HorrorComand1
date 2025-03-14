@@ -11,10 +11,8 @@ public class SoundEffectPlayer
     private readonly List<AudioSource> _sources = new();
     private readonly Queue<AudioSource> _freeSources = new();
 
-    public SoundEffectPlayer(MonoBehaviour monobehaviour)
-    {
+    public SoundEffectPlayer(MonoBehaviour monobehaviour) =>
         _monobehaviour = monobehaviour;
-    }
 
     public void Play(AudioClip clip, AudioFinishedCallback callback = null)
     {

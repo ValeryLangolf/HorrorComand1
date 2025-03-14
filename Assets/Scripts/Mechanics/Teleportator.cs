@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 [RequireComponent(typeof(Rigidbody))]
@@ -21,26 +22,39 @@ public class Teleportator : MonoBehaviour
 
     private void HandleTeleportation(TeleportMarker teleportMarker)
     {
-        Vector3 amendment = Vector3.zero;
-
-        if (teleportMarker is UndergroundTeleport)
+        switch (teleportMarker)
         {
-            amendment = new(0, Height, 0);
-            _rigidbody.velocity = Vector3.zero;
+            case LeftTeleport _:
+                MoveSide(new(_terrain.Width, 0, 0));
+                break;
+
+            case RightTeleport _:
+                MoveSide(new(-_terrain.Width, 0, 0));
+                break;
+
+            case UpTeleport _:
+                MoveSide(new(0, 0, -_terrain.Height));
+                break;
+
+            case DownTeleport _:
+                MoveSide(new(0, 0, _terrain.Height));
+                break;
+
+            case UndergroundTeleport _:
+                HandleUnderground(new(0, Height, 0));
+                break;
+
+            default:
+                throw new ArgumentOutOfRangeException("unknown");
         }
-
-        if (teleportMarker is LeftTeleport)
-            amendment = new(_terrain.Width, 0, 0);
-
-        if (teleportMarker is RightTeleport)
-            amendment = new(-_terrain.Width, 0, 0);
-
-        if (teleportMarker is UpTeleport)
-            amendment = new(0, 0, -_terrain.Height);
-
-        if (teleportMarker is DownTeleport)
-            amendment = new(0, 0, _terrain.Height);
-
-        transform.position += amendment;
     }
+
+    private void HandleUnderground(Vector3 distance)
+    {
+        MoveSide(distance);
+        _rigidbody.velocity = Vector3.zero;
+    }
+
+    private void MoveSide(Vector3 distance) =>
+        transform.position += distance;
 }

@@ -20,8 +20,8 @@ public class Mover
     public void Move(float valueRight, float valueForward)
     {
         Vector3 worldDirection = _transform.TransformDirection(new(
-            NormalizeHorizontalSpeed(valueRight), 
-            0, 
+            NormalizeHorizontalSpeed(valueRight),
+            0,
             NormalizeVerticalSpeed(valueForward)));
 
         _rigidbody.MovePosition(_rigidbody.position + _speed * Time.deltaTime * worldDirection);
