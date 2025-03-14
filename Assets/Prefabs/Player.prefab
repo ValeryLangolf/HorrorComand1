@@ -2308,8 +2308,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _player: {fileID: 6862856136203694615}
-  _cameraVerticalRotator: {fileID: 2472032424964105206}
+  _cameraLever: {fileID: 222705792249519768}
   _runSpeedMultiplier: 4
+  _mouseSensitivity: 2
   _isReadInputs: 1
 --- !u!1 &5121464879821532246
 GameObject:
@@ -4440,7 +4441,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8813014308886436669}
-  - component: {fileID: 2472032424964105206}
+  - component: {fileID: 2165108955029771670}
+  - component: {fileID: 222705792249519768}
   m_Layer: 0
   m_Name: CameraLever
   m_TagString: Untagged
@@ -4464,7 +4466,7 @@ Transform:
   m_Father: {fileID: 5768314104412557589}
   m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &2472032424964105206
+--- !u!114 &2165108955029771670
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -4473,9 +4475,18 @@ MonoBehaviour:
   m_GameObject: {fileID: 9087473691550162825}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 286f8f48e56b3394c9205b0944b6be37, type: 3}
+  m_Script: {fileID: 11500000, guid: 429e197af6efef54b98e0da574f9ad55, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _sensitivity: 2
-  _minimumVerticalAngle: -80
-  _maximumVerticalAngle: 65
+--- !u!114 &222705792249519768
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9087473691550162825}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b2c20958156caa44aa4e94bd5ce7b63c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

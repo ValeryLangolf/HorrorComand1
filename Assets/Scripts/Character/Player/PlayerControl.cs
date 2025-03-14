@@ -4,11 +4,14 @@ using UnityEngine;
 public class PlayerControl : MonoBehaviour
 {
     [SerializeField] private Player _player;
-    [SerializeField] private CameraVerticalRotator _cameraVerticalRotator;
+    [SerializeField] private CameraLever _cameraLever;
     [SerializeField] private float _runSpeedMultiplier;
+    [SerializeField] private float _mouseSensitivity;
     [SerializeField] private bool _isReadInputs;
 
     private readonly PlayerInput _input = new();
+    private CameraVerticalRotator _cameraVerticalRotator;
+    private PlayerBodyHorizontalRotator _playerBodyHorizontalRotator;
 
     private bool _isShowBook;
 
@@ -16,13 +19,17 @@ public class PlayerControl : MonoBehaviour
 
     private void Awake()
     {
-        _cameraVerticalRotator.EnableRotate();
+        _cameraVerticalRotator = new(_cameraLever.transform, _mouseSensitivity);
+        _playerBodyHorizontalRotator = new(transform, _mouseSensitivity);
     }
 
     private void Update()
     {
-        //if (_isShowBook == false)
-        //    _player.Rotate();
+        if (_isShowBook == false)
+        {
+            _cameraVerticalRotator.Rotate();
+            _playerBodyHorizontalRotator.Rotate();
+        }
 
         float right = 0;
         float forward = 0;
@@ -47,7 +54,7 @@ public class PlayerControl : MonoBehaviour
         if (_input.IsBookPressed())
         {
             _isShowBook = !_isShowBook;
-            
+
             if (_isShowBook)
                 ShowBook();
             else
@@ -64,12 +71,12 @@ public class PlayerControl : MonoBehaviour
     private void ShowBook()
     {
         _player.ShowBook();
-        _cameraVerticalRotator.DisableRotate();
+        _isShowBook = true;
     }
 
     private void HideBook()
     {
         _player.HideBook();
-        _cameraVerticalRotator.EnableRotate();
+        _isShowBook = false;
     }
 }

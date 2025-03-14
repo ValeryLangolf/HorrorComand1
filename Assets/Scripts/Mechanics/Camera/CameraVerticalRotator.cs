@@ -1,31 +1,29 @@
 using UnityEngine;
 
-public class CameraVerticalRotator : MonoBehaviour
+public class CameraVerticalRotator
 {
     private const string MouseY = "Mouse Y";
 
-    [SerializeField] private float _sensitivity = 2f;
-    [SerializeField] private float _minimumVerticalAngle = - 80;
-    [SerializeField] private float _maximumVerticalAngle = 65;
+    private const float MinimumVerticalAngle = - 80;
+    private const float MaximumVerticalAngle = 65;
 
-    private float currentAngleX = 0f;
-    private bool _isRotate;
+    private readonly Transform _transform;
+    private readonly float _sensitivity;
+    private float _currentAngleX = 0f;
 
-    public void EnableRotate() =>
-        _isRotate = true;
-
-    public void DisableRotate() =>
-        _isRotate = false;
-
-    private void LateUpdate()
+    public CameraVerticalRotator(Transform transform, float sensitivity)
     {
-        if (_isRotate == false)
-            return;
+        _transform = transform;
+        _sensitivity = sensitivity;
+    }
 
-        currentAngleX -= Input.GetAxis(MouseY) * _sensitivity;
-        currentAngleX = Mathf.Clamp(currentAngleX, _minimumVerticalAngle, _maximumVerticalAngle);
+    public void Rotate()
+    {
+        _currentAngleX -= Input.GetAxis(MouseY) * _sensitivity;
+        _currentAngleX = Mathf.Clamp(_currentAngleX, MinimumVerticalAngle, MaximumVerticalAngle);
+        float currentAngleY = _transform.eulerAngles.y;
 
-        Quaternion rotation = Quaternion.Euler(currentAngleX, 0, 0);
-        transform.rotation = rotation;
+        Quaternion rotation = Quaternion.Euler(_currentAngleX, currentAngleY, 0);
+        _transform.rotation = rotation;
     }
 }

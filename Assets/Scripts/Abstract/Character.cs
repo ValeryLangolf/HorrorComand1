@@ -19,7 +19,6 @@ public abstract class Character : MonoBehaviour
     private SoundEffectPlayer _soundPlayer;
     private TriggerDetector _triggerDetector;
     private Rigidbody _rigidbody;
-    private CharacterRotator _bodyRotator;
     private Jumper _jumper;
     private Mover _mover;
     private SpeedSmoother _smootherHorizontalAxis;
@@ -37,7 +36,6 @@ public abstract class Character : MonoBehaviour
         _rigidbody = GetComponent<Rigidbody>();
 
         _soundPlayer = new(this);
-        _bodyRotator = new(transform);
         _jumper = new(_rigidbody, _jumpForce);
         _mover = new(transform, _rigidbody, _moveSpeed);
         _animatorWrapping = new(this, _animator);
@@ -94,9 +92,6 @@ public abstract class Character : MonoBehaviour
         _animatorWrapping.ShowMove(valueRight, valueForward);
         _mover.Move(valueRight, valueForward);
     }
-
-    public void Rotate() =>
-        _bodyRotator.Rotate();
 
     protected float SmoothHorizontalAxis(float valueRight) =>
         _smootherHorizontalAxis.Smooth(valueRight);
