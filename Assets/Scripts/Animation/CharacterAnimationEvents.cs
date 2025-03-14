@@ -1,7 +1,7 @@
 using System;
 using UnityEngine;
 
-public class PlayerAnimationEvents : MonoBehaviour
+public class CharacterAnimationEvents : MonoBehaviour
 {
     public event Action LeftFoodSteppedOn;
     public event Action RightFoodSteppedOn;

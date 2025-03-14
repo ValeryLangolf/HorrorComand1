@@ -9,7 +9,7 @@ AnimatorStateTransition:
   m_Name: 
   m_Conditions:
   - m_ConditionMode: 1
-    m_ConditionEvent: IsShowBook
+    m_ConditionEvent: IsShowingBook
     m_EventTreshold: 0
   m_DstStateMachine: {fileID: 0}
   m_DstState: {fileID: 5416644222243143001}
@@ -128,7 +128,7 @@ AnimatorState:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: BookHide
+  m_Name: HidingBook
   m_Speed: 1
   m_CycleOffset: 0
   m_Transitions:
@@ -216,7 +216,7 @@ AnimatorController:
     m_DefaultInt: 0
     m_DefaultBool: 0
     m_Controller: {fileID: 0}
-  - m_Name: IsShowBook
+  - m_Name: IsShowingBook
     m_Type: 4
     m_DefaultFloat: 0
     m_DefaultInt: 0
@@ -356,28 +356,28 @@ AnimatorStateMachine:
   m_ChildStates:
   - serializedVersion: 1
     m_State: {fileID: 6103505584356214440}
-    m_Position: {x: -230, y: 210, z: 0}
+    m_Position: {x: -110, y: 210, z: 0}
   - serializedVersion: 1
     m_State: {fileID: 6139749217518280058}
-    m_Position: {x: -180, y: 360, z: 0}
+    m_Position: {x: -260, y: 330, z: 0}
   - serializedVersion: 1
     m_State: {fileID: 7471638463499095207}
-    m_Position: {x: 280, y: 210, z: 0}
+    m_Position: {x: 170, y: 210, z: 0}
   - serializedVersion: 1
     m_State: {fileID: 3049115766957857014}
-    m_Position: {x: 280, y: 360, z: 0}
+    m_Position: {x: 320, y: 390, z: 0}
   - serializedVersion: 1
     m_State: {fileID: -1980952276467792431}
-    m_Position: {x: 30, y: 210, z: 0}
+    m_Position: {x: 40, y: 330, z: 0}
   - serializedVersion: 1
     m_State: {fileID: -5470940925457708831}
-    m_Position: {x: 450, y: 290, z: 0}
+    m_Position: {x: 440, y: 270, z: 0}
   - serializedVersion: 1
     m_State: {fileID: 5416644222243143001}
-    m_Position: {x: -90, y: 450, z: 0}
+    m_Position: {x: -70, y: 510, z: 0}
   - serializedVersion: 1
     m_State: {fileID: -2646706776421498296}
-    m_Position: {x: 150, y: 450, z: 0}
+    m_Position: {x: 170, y: 510, z: 0}
   m_ChildStateMachines: []
   m_AnyStateTransitions: []
   m_EntryTransitions: []
@@ -446,7 +446,7 @@ AnimatorStateTransition:
   m_Name: 
   m_Conditions:
   - m_ConditionMode: 2
-    m_ConditionEvent: IsShowBook
+    m_ConditionEvent: IsShowingBook
     m_EventTreshold: 0
   m_DstStateMachine: {fileID: 0}
   m_DstState: {fileID: -2646706776421498296}
@@ -457,8 +457,8 @@ AnimatorStateTransition:
   m_TransitionDuration: 0.25
   m_TransitionOffset: 0
   m_ExitTime: 0
-  m_HasExitTime: 1
-  m_HasFixedDuration: 1
+  m_HasExitTime: 0
+  m_HasFixedDuration: 0
   m_InterruptionSource: 0
   m_OrderedInterruption: 1
   m_CanTransitionToSelf: 1
@@ -491,7 +491,7 @@ AnimatorState:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: LookInBook
+  m_Name: ShowingBook
   m_Speed: 1
   m_CycleOffset: 0
   m_Transitions:

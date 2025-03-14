@@ -17,12 +17,11 @@ public class Scenario : MonoBehaviour
     [SerializeField] private PositionAdjuster _adjuster;
     [SerializeField] private Interaction _interaction;
     [SerializeField] private Player _player;
-    [SerializeField] private Oldec _oldec;
+    [SerializeField] private PlayerControl _playerControl;
     [SerializeField] private TouchTrigger _oldecHeheTrigger;
     [SerializeField] private HintTrigger _oldecHintTrigger;
     [SerializeField] private HintTrigger _logWood;
     [SerializeField] private TargetPosition _logWoodTargetPosition;
-    [SerializeField] private SourceUnpleasantOdor _sourceUnpleasantOdor;
     [SerializeField] private MothSpline _mothSpline;
     [SerializeField] private WinPanel _winPanel;
     [SerializeField] private TaskElement _taskLookAround;
@@ -46,13 +45,13 @@ public class Scenario : MonoBehaviour
 
     private void OnEnable()
     {
-        _player.InteractionButtonPressed += OnInteraction;
+        _playerControl.InteractionButtonPressed += OnInteraction;
         _player.Triggered += HandleState;
     }
 
     private void OnDisable()
     {
-        _player.InteractionButtonPressed -= OnInteraction;
+        _playerControl.InteractionButtonPressed -= OnInteraction;
         _player.Triggered -= HandleState;
     }
 
@@ -93,14 +92,14 @@ public class Scenario : MonoBehaviour
 
     private void StartAwakening()
     {
-        _player.DisableControl();
+        _playerControl.DisableControl();
         _player.PlaySound(_awakening);
         _player.ShowGettingUp(OnGettingUpFinished);
         Invoke(nameof(StartDialogAwakening), 2f);
     }
 
     private void OnGettingUpFinished() =>
-        _player.EnableControl();
+        _playerControl.EnableControl();
 
     private void StartDialogAwakening()
     {
@@ -117,7 +116,6 @@ public class Scenario : MonoBehaviour
     {
         trigger.DisableCollider();
         _taskLookAround.Disable();
-        _oldec.PlaySound(_hehe_voice, PlayThoughtsTolkingOldec);
     }
 
     private void PlayThoughtsTolkingOldec() =>
@@ -133,11 +131,7 @@ public class Scenario : MonoBehaviour
     {
         trigger.DisableCollider();
         _taskTalkOldMan.Disable();
-        _player.PlaySound(_firstQuestionSmell, ListenAnswerThisLongHistory);
     }
-
-    private void ListenAnswerThisLongHistory() =>
-        _oldec.PlaySound(_answerThisLongHistory, EnableLogWood);
 
     private void EnableLogWood()
     {
@@ -149,23 +143,17 @@ public class Scenario : MonoBehaviour
     {
         trigger.DisableCollider();
         _taskFindPlaceSit.Disable();
-        _player.DisableControl();
+        _playerControl.DisableControl();
         _player.DisableCollider();
         _player.DisableGravity();
         _adjuster.Adjust(_player.transform, _logWoodTargetPosition.transform, 1.5f, SitOnLogWood);
     }
 
     private void SitOnLogWood() =>
-        _player.ShowSitting(ListenStory);
-
-    private void ListenStory() =>
-        _oldec.PlaySound(_storyAboutHedgehog, AskSecondQuestionSmell);
+        _player.ShowSitting();
 
     private void AskSecondQuestionSmell() =>
-        _player.PlaySound(_secondQuestionSmell, ListenEasyAnswerSmell);
-
-    private void ListenEasyAnswerSmell() =>
-        _oldec.PlaySound(_easyAnswerSmell, AskHowGetOutForest);
+        _player.PlaySound(_secondQuestionSmell);
 
     private void AskHowGetOutForest() =>
         _player.PlaySound(_questionGetOutForest, ListenAnswerFollowMoth);
@@ -173,7 +161,6 @@ public class Scenario : MonoBehaviour
     private void ListenAnswerFollowMoth()
     {
         _mothSpline.Enable();
-        _oldec.PlaySound(_answerFollowMoth, RiseFromLogWood);
     }
 
     private void RiseFromLogWood()
@@ -184,10 +171,9 @@ public class Scenario : MonoBehaviour
 
     private void EnableControl()
     {
-        _player.EnableControl();
+        _playerControl.EnableControl();
         _player.EnableCollider();
         _player.EnableGravity();
-        _sourceUnpleasantOdor.Enable();
     }
 
     private void AwardAchievementFindingSourceSmell(InteractiveTrigger trigger)

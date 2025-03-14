@@ -726,17 +726,6 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 4311126165152687549, guid: c6ee46850389b1247b086596000ec1bf, type: 3}
   m_PrefabInstance: {fileID: 8700350250535305387}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &563840305 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 2943720893090890427, guid: c6ee46850389b1247b086596000ec1bf, type: 3}
-  m_PrefabInstance: {fileID: 8700350250535305387}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c4354733a52d1234fa6734a15d75692f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &676602869 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 6966075424961162211, guid: 7d1d41a15e71cdf45be4b890d065ca68, type: 3}
@@ -841,7 +830,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 705507993}
   m_LocalRotation: {x: 0.27402797, y: -0.64573216, z: 0.708423, w: 0.077946045}
-  m_LocalPosition: {x: 18.269, y: 6.408, z: 30.602}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -1276,6 +1265,17 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 4ce760a0c8ef5f94a961773b5fa84fd6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &889130269 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 8325294643600057035, guid: 863177bb6d45c2c46a71f25cd2822527, type: 3}
+  m_PrefabInstance: {fileID: 4380580415600967021}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4cc6737f7835467479a41de6766d1ca4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1 &920354382
@@ -1724,12 +1724,11 @@ MonoBehaviour:
   _adjuster: {fileID: 1072989949}
   _interaction: {fileID: 963194230}
   _player: {fileID: 889130262}
-  _oldec: {fileID: 563840305}
+  _playerControl: {fileID: 889130269}
   _oldecHeheTrigger: {fileID: 1319310876}
   _oldecHintTrigger: {fileID: 815220}
   _logWood: {fileID: 209189897}
   _logWoodTargetPosition: {fileID: 1910360469}
-  _sourceUnpleasantOdor: {fileID: 0}
   _mothSpline: {fileID: 837196731}
   _winPanel: {fileID: 1836271519}
   _taskLookAround: {fileID: 834907875}
@@ -3390,14 +3389,6 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 2471815646674318777, guid: 863177bb6d45c2c46a71f25cd2822527, type: 3}
-      propertyPath: m_Interpolate
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2471815646674318777, guid: 863177bb6d45c2c46a71f25cd2822527, type: 3}
-      propertyPath: m_CollisionDetection
-      value: 3
-      objectReference: {fileID: 0}
     - target: {fileID: 4716949726344565465, guid: 863177bb6d45c2c46a71f25cd2822527, type: 3}
       propertyPath: _round
       value: 
@@ -3453,14 +3444,6 @@ PrefabInstance:
     - target: {fileID: 5768314104412557589, guid: 863177bb6d45c2c46a71f25cd2822527, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 6862856136203694615, guid: 863177bb6d45c2c46a71f25cd2822527, type: 3}
-      propertyPath: _moveSpeed
-      value: 2.5
-      objectReference: {fileID: 0}
-    - target: {fileID: 6862856136203694615, guid: 863177bb6d45c2c46a71f25cd2822527, type: 3}
-      propertyPath: _runSpeedMultiplier
-      value: 4
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

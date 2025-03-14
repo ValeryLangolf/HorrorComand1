@@ -19,6 +19,9 @@ public class Mover
 
     public void Move(float valueRight, float valueForward)
     {
+        if (valueRight == 0 && valueForward == 0)
+            return;
+
         Vector3 worldDirection = _transform.TransformDirection(new(
             NormalizeHorizontalSpeed(valueRight),
             0,

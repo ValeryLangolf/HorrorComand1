@@ -6,7 +6,7 @@ public class GroundDetector : MonoBehaviour
 
     private readonly RaycastHit[] _hits = new RaycastHit[4];
 
-    public bool IsGround()
+    public bool IsGrounded()
     {
         Ray ray = new(transform.position, Vector3.down);
         int hitCount = Physics.RaycastNonAlloc(ray, _hits, Distance);

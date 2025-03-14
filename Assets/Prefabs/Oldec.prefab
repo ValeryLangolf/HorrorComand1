@@ -176,7 +176,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4311126165152687549}
-  - component: {fileID: 2943720893090890427}
   m_Layer: 0
   m_Name: Oldec
   m_TagString: Untagged
@@ -202,18 +201,6 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 89.443, z: 0}
---- !u!114 &2943720893090890427
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8017343160115308457}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c4354733a52d1234fa6734a15d75692f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1001 &956129177822921613
 PrefabInstance:
   m_ObjectHideFlags: 0
