@@ -14,7 +14,6 @@ public enum GameInteractions
 
 public class Scenario : MonoBehaviour
 {
-    [SerializeField] private PositionAdjuster _adjuster;
     [SerializeField] private Interaction _interaction;
     [SerializeField] private Player _player;
     [SerializeField] private PlayerControl _playerControl;
@@ -41,7 +40,11 @@ public class Scenario : MonoBehaviour
     [SerializeField] private AudioClip _questionGetOutForest;
     [SerializeField] private AudioClip _answerFollowMoth;
 
-    private List<InteractiveTrigger> _itemsInInventory = new();
+    private readonly List<InteractiveTrigger> _itemsInInventory = new();
+    private PositionAdjuster _adjuster;
+
+    private void Awake() =>
+        _adjuster = new(this, 1.5f, 400f);
 
     private void OnEnable()
     {
@@ -146,7 +149,7 @@ public class Scenario : MonoBehaviour
         _playerControl.DisableControl();
         _player.DisableCollider();
         _player.DisableGravity();
-        _adjuster.Adjust(_player.transform, _logWoodTargetPosition.transform, 1.5f, SitOnLogWood);
+        _adjuster.Adjust(_player.transform, _logWoodTargetPosition.transform, SitOnLogWood);
     }
 
     private void SitOnLogWood() =>

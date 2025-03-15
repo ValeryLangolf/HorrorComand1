@@ -1,34 +1,50 @@
 using System.Collections;
 using UnityEngine;
 
-public class PositionAdjuster : MonoBehaviour
+public class PositionAdjuster
 {
-    private const float RotationSensitivity = 400f;
+    private const float PositionThreshold = 0.01f;
+    private const float RotationThreshold = 0.01f;
 
     private readonly WaitForFixedUpdate _wait = new();
+    private readonly MonoBehaviour _monoBehaviour;
+    private readonly float _speedMoving;
+    private readonly float _speedRotation;
+    private Coroutine _coroutine;
 
     public delegate void AdjustmentCallback();
 
-    public void Adjust(Transform obj, Transform target, float speed, AdjustmentCallback callback) =>
-        StartCoroutine(AdjustingOverTime(obj, target, speed, callback));
-
-    private IEnumerator AdjustingOverTime(Transform obj, Transform target, float speed, AdjustmentCallback callback)
+    public PositionAdjuster(MonoBehaviour monoBehaviour, float speedMoving, float speedRotation)
     {
-        float rotationSpeed = speed * RotationSensitivity;
+        _monoBehaviour = monoBehaviour;
+        _speedMoving = speedMoving;
+        _speedRotation = speedRotation;
+    }
 
-        while (Vector3.Distance(obj.position, target.position) > 0.1f || Quaternion.Angle(obj.rotation, target.rotation) > 1f)
+    public void Adjust(Transform obj, Transform target, AdjustmentCallback callback = null)
+    {
+        if (_coroutine != null)
+            _monoBehaviour.StopCoroutine(_coroutine);
+
+        _coroutine = _monoBehaviour.StartCoroutine(AdjustingOverTime(obj, target, callback));
+    }
+
+    private IEnumerator AdjustingOverTime(Transform obj, Transform target, AdjustmentCallback callback)
+    {
+        while (Vector3.Distance(obj.position, target.position) > PositionThreshold || Quaternion.Angle(obj.rotation, target.rotation) > RotationThreshold)
         {
             obj.SetPositionAndRotation(
-                Vector3.MoveTowards(obj.position, target.position, speed * Time.fixedDeltaTime), 
-                Quaternion.RotateTowards(obj.rotation, target.rotation, rotationSpeed * Time.fixedDeltaTime));
+                Vector3.MoveTowards(obj.position, target.position, _speedMoving * Time.fixedDeltaTime),
+                Quaternion.RotateTowards(obj.rotation, target.rotation, _speedRotation * Time.fixedDeltaTime));
 
             yield return _wait;
         }
 
         obj.SetPositionAndRotation(
-            target.position, 
+            target.position,
             target.rotation);
 
+        _coroutine = null;
         callback?.Invoke();
     }
 }

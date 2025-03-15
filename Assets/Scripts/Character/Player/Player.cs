@@ -34,10 +34,10 @@ public class Player : Character
     public void HideBook()
     {
         _isShowBook = false;
-        _animatorWrapping.HideBook(HideBookAfterAnimation);
+        _animatorWrapping.HideBook();
     }
 
-    private void HideBookAfterAnimation()
+    public void DeactivateBook()
     {
         if (_isShowBook == false)
             _book.Hide();

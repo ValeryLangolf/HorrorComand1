@@ -15,6 +15,12 @@ public class CameraVerticalRotator
     {
         _transform = transform;
         _sensitivity = sensitivity;
+        SetCurrentRotation();
+    }
+
+    public void SetCurrentRotation()
+    {
+        _currentAngleX = Input.GetAxis(MouseY) * _sensitivity;
     }
 
     public void Rotate()
