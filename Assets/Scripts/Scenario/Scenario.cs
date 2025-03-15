@@ -44,8 +44,11 @@ public class Scenario : MonoBehaviour
     private readonly List<InteractiveTrigger> _itemsInInventory = new();
     private PositionAdjuster _adjuster;
 
-    private void Awake() =>
+    private void Awake()
+    {
         _adjuster = new(this, 1.5f, 400f);
+        _book.Init();
+    }
 
     private void OnEnable()
     {
@@ -84,18 +87,20 @@ public class Scenario : MonoBehaviour
             case GameInteractions.SourceStenchFound:
                 AwardAchievementFindingSourceSmell(interactiveTrigger);
                 break;
-
-            case GameInteractions.TakeItem:
-                TakeItem(interactiveTrigger);
-                break;
         }
 
         switch (interactiveTrigger)
         {
             case NoteTrigger trigger:
-                _book.TakeNote(trigger);
+                TakeNote(trigger);
                 break;
         }
+    }
+
+    private void TakeNote(NoteTrigger trigger)
+    {
+        _playerControl.ShowBook();
+        _book.TakeNote(trigger);
     }
 
     private void StartAwakening()
@@ -109,10 +114,8 @@ public class Scenario : MonoBehaviour
     private void OnGettingUpFinished() =>
         _playerControl.EnableControl();
 
-    private void StartDialogAwakening()
-    {
+    private void StartDialogAwakening() =>
         _player.PlaySound(_awakeningMonolog, ShowTaskLookAround);
-    }
 
     private void ShowTaskLookAround()
     {
@@ -166,11 +169,8 @@ public class Scenario : MonoBehaviour
     private void AskHowGetOutForest() =>
         _player.PlaySound(_questionGetOutForest, ListenAnswerFollowMoth);
 
-    private void ListenAnswerFollowMoth()
-    {
+    private void ListenAnswerFollowMoth() =>
         _mothSpline.Enable();
-    }
-
     private void RiseFromLogWood()
     {
         _taskFollowButterfly.Enable();
@@ -190,12 +190,5 @@ public class Scenario : MonoBehaviour
         trigger.DisableCollider();
         _mothSpline.Disable();
         _winPanel.Enable();
-    }
-
-    private void TakeItem(InteractiveTrigger trigger)
-    {
-        trigger.HideObject();
-        _itemsInInventory.Add(trigger);
-        Debug.Log("Подобрана записка");
     }
 }

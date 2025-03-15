@@ -1,0 +1,1 @@
+﻿public class WorldNote4_5 : NoteTrigger { }

@@ -79,7 +79,7 @@ public class PlayerControl : MonoBehaviour
     public void DisableControl() =>
         _isReadInputs = false;
 
-    private void ShowBook()
+    public void ShowBook()
     {
         _player.ShowBook();
         ShowCursor();

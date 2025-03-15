@@ -15,7 +15,7 @@ public class Book : Entity
     private void Awake() =>
         _maximumPages = _pages.Length / 2;
 
-    private void Start()
+    public void Init()
     {
         HideNotes();
         ShowInfo();
@@ -46,7 +46,60 @@ public class Book : Entity
             case WorldNotePasswordWorkAccount:
                 ShowNote<NotePasswordWorkAccount>();
                 break;
+
+            case WorldNote2:
+                ShowNote<Note2>();
+                break;
+
+            case WorldNote3:
+                ShowNote<Note3>();
+                break;
+
+            case WorldNote4:
+                ShowNote<Note4>();
+                break;
+
+            case WorldNote4_5:
+                ShowNote<Note4_5>();
+                break;
+
+            case WorldNote5:
+                ShowNote<Note5>();
+                break;
+
+            case WorldNote6:
+                ShowNote<Note6>();
+                break;
+
+            case WorldNote7:
+                ShowNote<Note7>();
+                break;
         }
+
+        trigger.HideObject();
+
+        switch (trigger)
+        {
+            case WorldNotePasswordTV:
+            case WorldNotePasswordWorkAccount:
+            case WorldNote2:
+                _pageIndex = 0;
+                break;
+
+            case WorldNote3:
+            case WorldNote4:
+            case WorldNote4_5:
+                _pageIndex = 1;
+                break;
+
+            case WorldNote5:
+            case WorldNote6:
+            case WorldNote7:
+                _pageIndex = 2;
+                break;
+        }
+
+        ShowInfo();
     }
 
     private void OnButtonPressed(ButtonClickListener button)
