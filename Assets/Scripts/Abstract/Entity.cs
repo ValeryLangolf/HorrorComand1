@@ -2,9 +2,9 @@ using UnityEngine;
 
 public abstract class Entity : MonoBehaviour
 {
-    public void Show() =>
+    public void ShowObject() =>
         gameObject.SetActive(true);
 
-    public void Hide() =>
+    public void HideObject() =>
         gameObject.SetActive(false);
 }

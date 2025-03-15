@@ -1,3 +1,4 @@
+using System.Threading;
 using UnityEngine;
 
 public class CameraVerticalRotator
@@ -18,10 +19,8 @@ public class CameraVerticalRotator
         SetCurrentRotation();
     }
 
-    public void SetCurrentRotation()
-    {
-        _currentAngleX = Input.GetAxis(MouseY) * _sensitivity;
-    }
+    public void SetCurrentRotation() =>
+        _currentAngleX = _transform.eulerAngles.x;
 
     public void Rotate()
     {

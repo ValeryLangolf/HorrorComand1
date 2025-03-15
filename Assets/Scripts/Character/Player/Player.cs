@@ -12,7 +12,7 @@ public class Player : Character
         base.Awake();
 
         _animatorWrapping = new(this, Animator);
-        _book.Hide();
+        _book.HideObject();
     }
 
     public void ShowGettingUp(AnimationFinishedCallback callback = null) =>
@@ -26,7 +26,7 @@ public class Player : Character
 
     public void ShowBook()
     {
-        _book.Show();
+        _book.ShowObject();
         _isShowBook = true;
         _animatorWrapping.ShowBook();
     }
@@ -40,6 +40,6 @@ public class Player : Character
     public void DeactivateBook()
     {
         if (_isShowBook == false)
-            _book.Hide();
+            _book.HideObject();
     }
 }

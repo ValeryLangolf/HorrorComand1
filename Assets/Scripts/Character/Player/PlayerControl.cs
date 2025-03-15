@@ -30,6 +30,11 @@ public class PlayerControl : MonoBehaviour
         _cameraPositionAdjuster = new(this, SpeedMovingCameraAdjuster, SpeedRotationCameraAdjuster);
     }
 
+    private void Start()
+    {
+        HideCursor();
+    }
+
     private void Update()
     {
         if (_isShowBook == false)
@@ -54,7 +59,7 @@ public class PlayerControl : MonoBehaviour
 
         if (_isReadInputs == false)
             return;
-        
+
 
         if (_input.IsInteractionButtonPressed())
             InteractionButtonPressed?.Invoke();
@@ -77,6 +82,7 @@ public class PlayerControl : MonoBehaviour
     private void ShowBook()
     {
         _player.ShowBook();
+        ShowCursor();
         _cameraPositionAdjuster.Adjust(_cameraLever.transform, _cameraTargetShowBook.transform);
         _isShowBook = true;
     }
@@ -84,6 +90,7 @@ public class PlayerControl : MonoBehaviour
     private void HideBook()
     {
         _player.HideBook();
+        HideCursor();
         _cameraPositionAdjuster.Adjust(_cameraLever.transform, _cameraTargetHideBook.transform, ReturnCameraControl);
     }
 
@@ -92,5 +99,19 @@ public class PlayerControl : MonoBehaviour
         _cameraVerticalRotator.SetCurrentRotation();
         _player.DeactivateBook();
         _isShowBook = false;
+    }
+
+    private void ShowCursor() =>
+        Cursor.visible = true;
+
+    private void HideCursor() =>
+        Cursor.visible = false;
+
+    private void OnApplicationFocus(bool focus)
+    {
+        if (focus && _isShowBook == false)
+            HideCursor();
+        else
+            ShowCursor();
     }
 }

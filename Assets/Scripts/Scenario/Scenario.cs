@@ -27,6 +27,7 @@ public class Scenario : MonoBehaviour
     [SerializeField] private TaskElement _taskTalkOldMan;
     [SerializeField] private TaskElement _taskFindPlaceSit;
     [SerializeField] private TaskElement _taskFollowButterfly;
+    [SerializeField] private Book _book;
 
     [SerializeField] private AudioClip _awakening;
     [SerializeField] private AudioClip _awakeningMonolog;
@@ -87,9 +88,13 @@ public class Scenario : MonoBehaviour
             case GameInteractions.TakeItem:
                 TakeItem(interactiveTrigger);
                 break;
+        }
 
-            default:
-                throw new NotImplementedException();
+        switch (interactiveTrigger)
+        {
+            case NoteTrigger trigger:
+                _book.TakeNote(trigger);
+                break;
         }
     }
 
@@ -189,7 +194,7 @@ public class Scenario : MonoBehaviour
 
     private void TakeItem(InteractiveTrigger trigger)
     {
-        trigger.Hide();
+        trigger.HideObject();
         _itemsInInventory.Add(trigger);
         Debug.Log("Подобрана записка");
     }

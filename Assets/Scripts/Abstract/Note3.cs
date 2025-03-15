@@ -1,0 +1,1 @@
+﻿public class Note3 : PlotNote { }

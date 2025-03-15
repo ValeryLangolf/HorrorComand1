@@ -1,7 +1,7 @@
 using UnityEngine;
 
 [RequireComponent(typeof(Collider))]
-public class InteractiveTrigger : MonoBehaviour
+public class InteractiveTrigger : Entity
 {
     [SerializeField] private GameInteractions _name;
 
@@ -16,10 +16,4 @@ public class InteractiveTrigger : MonoBehaviour
 
     public void DisableCollider() =>
         _triggerCollider.enabled = false;
-
-    public void Hide() =>
-        gameObject.SetActive(false);
-
-    public void Show() =>
-        gameObject.SetActive(false);
 }

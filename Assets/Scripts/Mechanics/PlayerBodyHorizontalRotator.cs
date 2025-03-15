@@ -12,7 +12,11 @@ public class PlayerBodyHorizontalRotator
     {
         _transform = transform;
         _sensitivity = sensitivity;
+        SetCurrentRotation();
     }
+
+    public void SetCurrentRotation() =>
+        _currentAngleY = _transform.eulerAngles.y;
 
     public void Rotate()
     {
