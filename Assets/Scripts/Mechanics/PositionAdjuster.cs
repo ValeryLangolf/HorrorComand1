@@ -31,7 +31,8 @@ public class PositionAdjuster
 
     private IEnumerator AdjustingOverTime(Transform obj, Transform target, AdjustmentCallback callback)
     {
-        while (Vector3.Distance(obj.position, target.position) > PositionThreshold || Quaternion.Angle(obj.rotation, target.rotation) > RotationThreshold)
+        while (Vector3.Distance(obj.position, target.position) > PositionThreshold
+            || Quaternion.Angle(obj.rotation, target.rotation) > RotationThreshold)
         {
             obj.SetPositionAndRotation(
                 Vector3.MoveTowards(obj.position, target.position, _speedMoving * Time.fixedDeltaTime),

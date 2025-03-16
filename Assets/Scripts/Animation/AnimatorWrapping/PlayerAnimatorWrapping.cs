@@ -9,7 +9,7 @@ public class PlayerAnimatorWrapping : CharacterAnimatorWrapping
     public const string ShowingBook = nameof(ShowingBook);
     public const string HidingBook = nameof(HidingBook);
 
-    public PlayerAnimatorWrapping(MonoBehaviour monoBehaviour, Animator animator) : base(monoBehaviour, animator) { }
+    public PlayerAnimatorWrapping(Animator animator) : base(animator) { }
 
     public void ShowGettingUp(AnimationFinishedCallback callback = null) =>
         Play(GettingUp, callback);

@@ -1,0 +1,1 @@
+﻿public class NoteInWorld4_5 : NoteInWorldTrigger { }

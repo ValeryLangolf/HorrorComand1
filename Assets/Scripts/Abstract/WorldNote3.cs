@@ -1,1 +1,0 @@
-﻿public class WorldNote3 : NoteTrigger { }

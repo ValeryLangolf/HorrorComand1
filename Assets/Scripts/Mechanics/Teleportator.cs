@@ -20,7 +20,7 @@ public class Teleportator : MonoBehaviour
     private void OnDisable() =>
         _triggerDetector.TeleportTriggered -= HandleTeleportation;
 
-    private void HandleTeleportation(TeleportMarker teleportMarker)
+    private void HandleTeleportation(TeleportTrigger teleportMarker)
     {
         switch (teleportMarker)
         {
@@ -41,7 +41,7 @@ public class Teleportator : MonoBehaviour
                 break;
 
             case UndergroundTeleport _:
-                HandleUnderground(new(0, Height, 0));
+                MoveUp(new(0, Height, 0));
                 break;
 
             default:
@@ -49,7 +49,7 @@ public class Teleportator : MonoBehaviour
         }
     }
 
-    private void HandleUnderground(Vector3 distance)
+    private void MoveUp(Vector3 distance)
     {
         MoveSide(distance);
         _rigidbody.velocity = Vector3.zero;

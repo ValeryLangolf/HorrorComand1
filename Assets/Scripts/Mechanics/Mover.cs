@@ -10,9 +10,9 @@ public class Mover
     private readonly Rigidbody _rigidbody;
     private readonly float _speed;
 
-    public Mover(Transform transform, Rigidbody rigidbody, float speed)
+    public Mover(Rigidbody rigidbody, float speed)
     {
-        _transform = transform;
+        _transform = rigidbody.GetComponent<Transform>();
         _rigidbody = rigidbody;
         _speed = speed;
     }
