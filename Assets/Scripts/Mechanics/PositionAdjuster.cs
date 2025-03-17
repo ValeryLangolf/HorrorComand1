@@ -1,6 +1,8 @@
 using System.Collections;
 using UnityEngine;
 
+public delegate void AdjustmentCallback();
+
 public class PositionAdjuster
 {
     private const float PositionThreshold = 0.01f;
@@ -11,8 +13,6 @@ public class PositionAdjuster
     private readonly float _speedMoving;
     private readonly float _speedRotation;
     private Coroutine _coroutine;
-
-    public delegate void AdjustmentCallback();
 
     public PositionAdjuster(MonoBehaviour monoBehaviour, float speedMoving, float speedRotation)
     {
@@ -27,6 +27,14 @@ public class PositionAdjuster
             _monoBehaviour.StopCoroutine(_coroutine);
 
         _coroutine = _monoBehaviour.StartCoroutine(AdjustingOverTime(obj, target, callback));
+    }
+
+    public void Adjust(Transform obj, Vector3 targetPosition, Quaternion targetRotation, AdjustmentCallback callback = null)
+    {
+        if (_coroutine != null)
+            _monoBehaviour.StopCoroutine(_coroutine);
+
+        _coroutine = _monoBehaviour.StartCoroutine(AdjustingOverTime(obj, targetPosition, targetRotation, callback));
     }
 
     private IEnumerator AdjustingOverTime(Transform obj, Transform target, AdjustmentCallback callback)
@@ -44,6 +52,26 @@ public class PositionAdjuster
         obj.SetPositionAndRotation(
             target.position,
             target.rotation);
+
+        _coroutine = null;
+        callback?.Invoke();
+    }
+
+    private IEnumerator AdjustingOverTime(Transform obj, Vector3 targetPosition, Quaternion targetRotation, AdjustmentCallback callback)
+    {
+        while (Vector3.Distance(obj.position, targetPosition) > PositionThreshold
+            || Quaternion.Angle(obj.rotation, targetRotation) > RotationThreshold)
+        {
+            obj.SetPositionAndRotation(
+                Vector3.MoveTowards(obj.position, targetPosition, _speedMoving * Time.fixedDeltaTime),
+                Quaternion.RotateTowards(obj.rotation, targetRotation, _speedRotation * Time.fixedDeltaTime));
+
+            yield return _wait;
+        }
+
+        obj.SetPositionAndRotation(
+            targetPosition,
+            targetRotation);
 
         _coroutine = null;
         callback?.Invoke();

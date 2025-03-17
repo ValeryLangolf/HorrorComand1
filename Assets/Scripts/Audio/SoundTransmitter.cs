@@ -6,16 +6,23 @@ public enum SoundName
 {
     LeftStepGrass,
     RightStepGrass,
+    TurningPage,
+    NoteOpened,
+    NoteClosed,
 }
 
 public class SoundTransmitter : MonoBehaviour
 {
     [SerializeField] private SoundEffectPlayer _sfxPlayer;
     [SerializeField] private Player _player;
+    [SerializeField] private Book _book;
 
     [Header("Sounds:")]
     [SerializeField] private AudioClip _leftStepGrass;
-    [SerializeField] private AudioClip _RightStepGrass;
+    [SerializeField] private AudioClip _rightStepGrass;
+    [SerializeField] private AudioClip _turningPage;
+    [SerializeField] private AudioClip _noteOpened;
+    [SerializeField] private AudioClip _noteClosed;
 
     private Dictionary<SoundName, AudioClip> _clips;
 
@@ -25,11 +32,13 @@ public class SoundTransmitter : MonoBehaviour
     private void OnEnable()
     {
         _player.SoundPlayBack += Play;
+        _book.SoundPlayBack += Play;
     }
 
     private void OnDisable()
     {
         _player.SoundPlayBack -= Play;
+        _book.SoundPlayBack -= Play;
     }
 
     public void Play(SoundParams soundParams)
@@ -43,7 +52,10 @@ public class SoundTransmitter : MonoBehaviour
         _clips = new()
         {
             { SoundName.LeftStepGrass, ValidateClip(_leftStepGrass) },
-            { SoundName.RightStepGrass, ValidateClip(_RightStepGrass) },
+            { SoundName.RightStepGrass, ValidateClip(_rightStepGrass) },
+            { SoundName.TurningPage, ValidateClip(_turningPage) },
+            { SoundName.NoteOpened, ValidateClip(_noteOpened) },
+            { SoundName.NoteClosed, ValidateClip(_noteClosed) },
         };
     }
 

@@ -4,7 +4,7 @@ using UnityEngine.UI;
 
 [RequireComponent(typeof(Button))]
 [RequireComponent(typeof(Image))]
-public class ButtonClickListener : Entity
+public abstract class ButtonClickListener : Entity
 {
     private const float Alpha = 0.1f;
 
@@ -13,7 +13,7 @@ public class ButtonClickListener : Entity
 
     public event Action<ButtonClickListener> ButtonPressed;
 
-    private void Awake()
+    protected virtual void Awake()
     {
         _button = GetComponent<Button>();
         _image = GetComponent<Image>();
@@ -32,6 +32,6 @@ public class ButtonClickListener : Entity
     protected void SetColor(Color color) =>
         _image.color = color;
 
-    private void OnButtonClick() =>
+    protected virtual void OnButtonClick() =>
         ButtonPressed?.Invoke(this);
 }

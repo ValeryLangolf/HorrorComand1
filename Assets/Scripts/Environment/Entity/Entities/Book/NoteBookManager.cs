@@ -1,11 +1,30 @@
-﻿public class NoteBookManager
+﻿using System;
+
+public class NoteBookManager
 {
     private readonly PlotNote[] _notes;
 
-    public NoteBookManager(PlotNote[] notes)
+    private readonly Action<ButtonClickListener> _onNotePressed;
+
+    public NoteBookManager(PlotNote[] notes, Action<ButtonClickListener> onNotePressed)
     {
         _notes = notes;
+        _onNotePressed = onNotePressed;
         HideNotes();
+    }
+
+    public PlotNote CurrentNote {  get; private set; }
+
+    public void SubscribeClick()
+    {
+        foreach (ButtonClickListener note in _notes)
+            note.ButtonPressed += _onNotePressed;
+    }
+
+    public void UnsubscribeClick()
+    {
+        foreach (ButtonClickListener note in _notes)
+            note.ButtonPressed -= _onNotePressed;
     }
 
     public void ShowNoteBasedOnTrigger(NoteInWorldTrigger trigger)
@@ -60,6 +79,9 @@
     {
         foreach (var note in _notes)
             if (note is T _)
+            {
                 note.ShowObject();
+                CurrentNote = note;
+            }
     }
 }

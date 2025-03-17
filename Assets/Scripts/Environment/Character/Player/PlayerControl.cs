@@ -7,6 +7,7 @@ public class PlayerControl : MonoBehaviour
     private const float SpeedRotationCameraAdjuster = 150f;
 
     [SerializeField] private Player _player;
+    [SerializeField] private Book _book;
     [SerializeField] private CameraLever _cameraLever;
     [SerializeField] private CameraTarget _cameraTargetShowBook;
     [SerializeField] private CameraTarget _cameraTargetHideBook;
@@ -67,9 +68,9 @@ public class PlayerControl : MonoBehaviour
         _horizontalRotator.Disable();
     }
 
-    public void ShowBook()
+    public void ShowBook(AnimationFinishedCallback callback = null)
     {
-        _player.ShowBook();
+        _player.ShowBook(callback);
         ShowCursor();
         _verticalRotator.Disable();
         _horizontalRotator.Disable();
@@ -109,7 +110,7 @@ public class PlayerControl : MonoBehaviour
     private void HandleBookKeyPressed()
     {
         if (_isBookShowed)
-            HideBook();
+            _book.ZoomOutNote(HideBook);
         else
             ShowBook();
     }

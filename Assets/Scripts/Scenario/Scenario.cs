@@ -42,7 +42,7 @@ public class Scenario : MonoBehaviour
 
     private void TakeNote(NoteInWorldTrigger trigger)
     {
-        _playerControl.ShowBook();
+        _playerControl.ShowBook(_book.ZoomInCurrentNote);
         _book.TakeNote(trigger);
     }
 

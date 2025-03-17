@@ -39,19 +39,21 @@ public class AnimatorWrapping
     }
 
     private void StartIfCallback(AnimationFinishedCallback callback, string animationName)
-    {
+    {        
         if (callback != null)
             _monobehaviour.StartCoroutine(WaitForAnimation(animationName, callback));
     }
 
     private IEnumerator WaitForAnimation(string animationName, AnimationFinishedCallback callback)
     {
+        while (!_animator.GetCurrentAnimatorStateInfo(0).IsName(animationName))
+            yield return null;
+
         AnimatorStateInfo stateInfo = _animator.GetCurrentAnimatorStateInfo(0);
 
-        while (stateInfo.IsName(animationName))
+        while (stateInfo.IsName(animationName) && stateInfo.normalizedTime < 1.0f)
         {
             stateInfo = _animator.GetCurrentAnimatorStateInfo(0);
-
             yield return null;
         }
 

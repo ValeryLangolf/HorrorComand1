@@ -68,7 +68,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 58aebcdab340787428075e2e244c3893, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _name: 2
 --- !u!1 &8279171993710480481
 GameObject:
   m_ObjectHideFlags: 0
@@ -101,7 +100,7 @@ Transform:
   - {fileID: 1172984506645252073}
   - {fileID: 2538524143287403182}
   m_Father: {fileID: 0}
-  m_RootOrder: -1
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: -25.308, z: -88.4}
 --- !u!1 &8904739596441155183
 GameObject:
@@ -112,7 +111,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 9124993225488436852}
-  - component: {fileID: 7136467942565795912}
   m_Layer: 0
   m_Name: LogWoodTarget
   m_TagString: Untagged
@@ -135,18 +133,6 @@ Transform:
   m_Father: {fileID: 5120866294722709822}
   m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 116.838, z: 0}
---- !u!114 &7136467942565795912
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8904739596441155183}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 429e197af6efef54b98e0da574f9ad55, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1001 &2643647337932219717
 PrefabInstance:
   m_ObjectHideFlags: 0

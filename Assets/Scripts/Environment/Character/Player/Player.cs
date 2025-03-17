@@ -24,11 +24,11 @@ public class Player : Character
     public void ShowSitToStand(AnimationFinishedCallback callback = null) =>
         _animatorWrapping.ShowSitToStand(callback);
 
-    public void ShowBook()
+    public void ShowBook(AnimationFinishedCallback callback = null)
     {
         _book.ShowObject();
         _isShowedBook = true;
-        _animatorWrapping.ShowBook();
+        _animatorWrapping.ShowBook(callback);
     }
 
     public void HideBook()

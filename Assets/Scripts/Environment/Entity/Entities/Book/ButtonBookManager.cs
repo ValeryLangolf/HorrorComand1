@@ -2,22 +2,22 @@ using System;
 
 public class ButtonBookManager
 {
-    private readonly ButtonClickListener[] _buttons;
+    private readonly ButtonArrow[] _buttons;
     private readonly Action<ButtonClickListener> _onButtonPressed;
 
-    public ButtonBookManager(ButtonClickListener[] buttons, Action<ButtonClickListener> onButtonPressed)
+    public ButtonBookManager(ButtonArrow[] buttons, Action<ButtonClickListener> onButtonPressed)
     {
         _buttons = buttons;
         _onButtonPressed = onButtonPressed;
     }
 
-    public void EnableButtons()
+    public void SubscribeClick()
     {
         foreach (var button in _buttons)
             button.ButtonPressed += _onButtonPressed;
     }
 
-    public void DisableButtons()
+    public void UnsubscribeClick()
     {
         foreach (var button in _buttons)
             button.ButtonPressed -= _onButtonPressed;
