@@ -11,12 +11,8 @@ public abstract class Character : MonoBehaviour
     [SerializeField] private float _jumpForce;
     [SerializeField] private float _moveSpeed;
 
-    [SerializeField] private AudioClip _leftStep;
-    [SerializeField] private AudioClip _rightStep;
-
     private TriggerDetector _triggerDetector;
     private Rigidbody _rigidbody;
-    private SoundEffectPlayer _soundPlayer;
     private Jumper _jumper;
     private Mover _mover;
     private CharacterAnimatorWrapping _animatorWrapping;
@@ -25,6 +21,7 @@ public abstract class Character : MonoBehaviour
     private SpeedSmoother _smootherVerticalAxis;
 
     public event Action<TouchTrigger> Triggered;
+    public event Action<SoundParams> SoundPlayBack;
 
     protected Animator GetAnimator => _animator;
 
@@ -33,7 +30,6 @@ public abstract class Character : MonoBehaviour
         _triggerDetector = GetComponent<TriggerDetector>();
         _rigidbody = GetComponent<Rigidbody>();
 
-        _soundPlayer = new(this);
         _jumper = new(_rigidbody, _jumpForce);
         _mover = new(_rigidbody, _moveSpeed);
         _animatorWrapping = new(_animator);
@@ -99,11 +95,11 @@ public abstract class Character : MonoBehaviour
         Triggered?.Invoke(trigger);
 
     private void OnSoundLeftStep() =>
-        PlaySound(_leftStep);
+        PlaySound(SoundName.LeftStepGrass);
 
     private void OnSoundRightStep() =>
-        PlaySound(_rightStep);
+        PlaySound(SoundName.RightStepGrass);
 
-    private void PlaySound(AudioClip clip, AudioFinishedCallback callback = null) =>
-        _soundPlayer.Play(clip, callback);
+    private void PlaySound(SoundName name) =>
+        SoundPlayBack?.Invoke(new(name, transform));
 }
