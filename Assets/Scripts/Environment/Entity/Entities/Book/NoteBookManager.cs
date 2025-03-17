@@ -13,7 +13,7 @@ public class NoteBookManager
         HideNotes();
     }
 
-    public PlotNote CurrentNote {  get; private set; }
+    public PlotNote CurrentNote { get; private set; }
 
     public void SubscribeClick()
     {
@@ -79,9 +79,12 @@ public class NoteBookManager
     {
         foreach (var note in _notes)
             if (note is T _)
-            {
-                note.ShowObject();
-                CurrentNote = note;
-            }
+                ShowNote(note);
+    }
+
+    private void ShowNote(PlotNote note)
+    {
+        note.ShowObject();
+        CurrentNote = note;
     }
 }

@@ -6,9 +6,15 @@ public enum SoundName
 {
     LeftStepGrass,
     RightStepGrass,
+    LeftStepWoodFloor,
+    RightStepWoodFloor,
     TurningPage,
     NoteOpened,
     NoteClosed,
+    BookOpened,
+    BookClosed,
+    JumpUp,
+    JumpDown,
 }
 
 public class SoundTransmitter : MonoBehaviour
@@ -20,9 +26,15 @@ public class SoundTransmitter : MonoBehaviour
     [Header("Sounds:")]
     [SerializeField] private AudioClip _leftStepGrass;
     [SerializeField] private AudioClip _rightStepGrass;
+    [SerializeField] private AudioClip _leftStepWoodFloor;
+    [SerializeField] private AudioClip _rightStepWoodFloor;
     [SerializeField] private AudioClip _turningPage;
     [SerializeField] private AudioClip _noteOpened;
     [SerializeField] private AudioClip _noteClosed;
+    [SerializeField] private AudioClip _bookOpened;
+    [SerializeField] private AudioClip _bookClosed;
+    [SerializeField] private AudioClip _jumpUp;
+    [SerializeField] private AudioClip _jumpDown;
 
     private Dictionary<SoundName, AudioClip> _clips;
 
@@ -53,9 +65,15 @@ public class SoundTransmitter : MonoBehaviour
         {
             { SoundName.LeftStepGrass, ValidateClip(_leftStepGrass) },
             { SoundName.RightStepGrass, ValidateClip(_rightStepGrass) },
+            { SoundName.LeftStepWoodFloor, ValidateClip(_leftStepWoodFloor) },
+            { SoundName.RightStepWoodFloor, ValidateClip(_rightStepWoodFloor) },
             { SoundName.TurningPage, ValidateClip(_turningPage) },
             { SoundName.NoteOpened, ValidateClip(_noteOpened) },
             { SoundName.NoteClosed, ValidateClip(_noteClosed) },
+            { SoundName.BookOpened, ValidateClip(_bookOpened) },
+            { SoundName.BookClosed, ValidateClip(_bookClosed) },
+            { SoundName.JumpUp, ValidateClip(_jumpUp) },
+            { SoundName.JumpDown, ValidateClip(_jumpDown) },
         };
     }
 

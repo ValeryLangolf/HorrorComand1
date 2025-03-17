@@ -29,12 +29,14 @@ public class Player : Character
         _book.ShowObject();
         _isShowedBook = true;
         _animatorWrapping.ShowBook(callback);
+        PlaySound(SoundName.BookOpened);
     }
 
     public void HideBook()
     {
         _isShowedBook = false;
         _animatorWrapping.HideBook();
+        PlaySound(SoundName.BookClosed);
     }
 
     public void DeactivateBook()

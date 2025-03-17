@@ -34,6 +34,7 @@ public abstract class Character : MonoBehaviour
         _mover = new(_rigidbody, _moveSpeed);
         _animatorWrapping = new(_animator);
         _groundDetector = new(transform, 0.14f);
+        _groundDetector.Enable();
         _smootherHorizontalAxis = new(_smoothValueMovement);
         _smootherVerticalAxis = new(_smoothValueMovement);
     }
@@ -43,6 +44,7 @@ public abstract class Character : MonoBehaviour
         _triggerDetector.TouchTriggered += HandleTrigger;
         _animationEvents.LeftFoodSteppedOn += OnSoundLeftStep;
         _animationEvents.RightFoodSteppedOn += OnSoundRightStep;
+        _groundDetector.DownJumped += OnSoundDownJump;
     }
 
     private void OnDisable()
@@ -50,6 +52,7 @@ public abstract class Character : MonoBehaviour
         _triggerDetector.TouchTriggered -= HandleTrigger;
         _animationEvents.LeftFoodSteppedOn -= OnSoundLeftStep;
         _animationEvents.RightFoodSteppedOn -= OnSoundRightStep;
+        _groundDetector.DownJumped -= OnSoundDownJump;
     }
 
     public void EnableCollider() =>
@@ -69,11 +72,12 @@ public abstract class Character : MonoBehaviour
 
     public void Jump()
     {
-        if (_groundDetector.IsGrounded() == false)
+        if (_groundDetector.IsGrounded == false)
             return;
 
         _jumper.Jump();
         _animatorWrapping.ShowJump();
+        PlaySound(SoundName.JumpUp);
     }
 
     public void Move(float valueRight, float valueForward)
@@ -94,12 +98,45 @@ public abstract class Character : MonoBehaviour
     private void HandleTrigger(TouchTrigger trigger) =>
         Triggered?.Invoke(trigger);
 
-    private void OnSoundLeftStep() =>
-        PlaySound(SoundName.LeftStepGrass);
+    private void OnSoundDownJump() =>
+        PlaySound(SoundName.JumpDown);
 
-    private void OnSoundRightStep() =>
-        PlaySound(SoundName.RightStepGrass);
+    private void OnSoundLeftStep()
+    {
+        SoundName name = SoundName.LeftStepGrass;
 
-    private void PlaySound(SoundName name) =>
+        switch (_groundDetector.GroundMarker)
+        {
+            case GrassMarker:
+                name = SoundName.LeftStepGrass;
+                break;
+
+            case WoodFloor:
+                name = SoundName.LeftStepWoodFloor;
+                break;
+        }
+
+        PlaySound(name);
+    }
+
+    private void OnSoundRightStep()
+    {
+        SoundName name = SoundName.LeftStepGrass;
+
+        switch (_groundDetector.GroundMarker)
+        {
+            case GrassMarker:
+                name = SoundName.RightStepGrass;
+                break;
+
+            case WoodFloor:
+                name = SoundName.RightStepWoodFloor;
+                break;
+        }
+
+        PlaySound(name);
+    }
+
+    protected void PlaySound(SoundName name) =>
         SoundPlayBack?.Invoke(new(name, transform));
 }

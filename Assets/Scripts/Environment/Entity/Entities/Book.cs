@@ -7,7 +7,7 @@ public class Book : Entity
 {
     [SerializeField] private PageBook[] _pages;
     [SerializeField] private PlotNote[] _notes;
-    [SerializeField] private ButtonArrow[] _buttons;
+    [SerializeField] private ButtonArrow[] _arrow;
     [SerializeField] private NoteInBookTarget _noteInBookTarget;
 
     private PageBookManager _pageManager;
@@ -26,10 +26,8 @@ public class Book : Entity
 
     public event Action<SoundParams> SoundPlayBack;
 
-    private void Awake()
-    {
+    private void Awake() =>
         Init();
-    }
 
     private void Init()
     {
@@ -39,7 +37,7 @@ public class Book : Entity
         _isInit = true;
 
         _pageManager = new PageBookManager(_pages);
-        _buttonManager = new ButtonBookManager(_buttons, OnButtonPressed);
+        _buttonManager = new ButtonBookManager(_arrow, OnButtonPressed);
         _noteManager = new NoteBookManager(_notes, OnNotePressed);
         _notePositionAdjuster = new(this, 1, 100);
         ShowInfo();
@@ -65,7 +63,7 @@ public class Book : Entity
 
         _noteManager.ShowNoteBasedOnTrigger(trigger);
         _pageManager.UpdatePageIndex(trigger);
-        ShowInfo();       
+        ShowInfo();
     }
 
     private void OnButtonPressed(ButtonClickListener button)
@@ -91,19 +89,17 @@ public class Book : Entity
         if (_isNoteSelected == false)
         {
             ZoomInOnNote(button);
+            return;
         }
-        else
+
+        if (_currentNote != button)
         {
-            if (_currentNote != button)
-            {
-                _noteInQueue = button;
-                ZoomOutNote(OnNotePressed);
-            }
-            else
-            {
-                ZoomOutNote();
-            }
+            _noteInQueue = button;
+            ZoomOutNote(OnNotePressed);
+            return;
         }
+
+        ZoomOutNote();
     }
 
     private void OnNotePressed() =>

@@ -43,7 +43,6 @@ public class PlayerControl : MonoBehaviour
         _inputReader.MovePressed += OnMove;
         _inputReader.InteractionKeyPressed += InvokeInteractionKeyPressed;
         _inputReader.BookKeyPressed += HandleBookKeyPressed;
-
     }
 
     private void OnDisable()
