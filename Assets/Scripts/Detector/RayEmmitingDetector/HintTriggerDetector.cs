@@ -1,75 +1,43 @@
 using System;
-using System.Collections;
 using UnityEngine;
 
-public class HintTriggerDetector
+public class HintTriggerDetector : RayDetector
 {
-    private readonly MonoBehaviour _monoBehaviour;
-    private readonly Transform _transform;
-    private readonly float _distance;
-    private readonly RaycastHit[] _hits = new RaycastHit[5];
-
-    private Coroutine _coroutine;
+    private Transform _transform;
     private bool _isDetected;
 
     public event Action<HintTrigger> Detected;
     public event Action Undetected;
 
-    public HintTriggerDetector(float rayDistance)
+    public HintTriggerDetector(float rayDistance) : base(Camera.main.transform, rayDistance)
     {
         _transform = Camera.main.transform;
-        _monoBehaviour = _transform.GetComponent<MonoBehaviour>();
-        _distance = rayDistance;
     }
 
-    public void StartDetection()
+    protected override void HandleHits()
     {
-        StopDetection();
-        _coroutine = _monoBehaviour.StartCoroutine(DetectOverTime());
-    }
+        int hitCount = GetHitCount(_transform.forward, out RaycastHit[] hits);
+        bool isHit = IsHit(hits, hitCount, out HintTrigger hintTrigger);
 
-    public void StopDetection()
-    {
-        if (_coroutine != null)
-            _monoBehaviour.StopCoroutine(_coroutine);
-    }
+        if (_isDetected == isHit)
+            return;
 
-    private void PerformIntersectionCheck()
-    {
-        Ray ray = new(_transform.position, _transform.forward);
-        int hitCount = Physics.RaycastNonAlloc(ray, _hits, _distance);
-
-        for (int i = 0; i < hitCount; i++)
-            if (IsFound(_hits[i]))
-                return;
+        _isDetected = isHit;
 
         if (_isDetected)
-        {
-            _isDetected = false;
-            Undetected?.Invoke();
-        }
-    }
-
-    private bool IsFound(RaycastHit hit)
-    {
-        bool isFound = hit.collider.TryGetComponent(out HintTrigger hintTrigger);
-
-        if (isFound == true && _isDetected == false)
-        {
-            _isDetected = true;
             Detected?.Invoke(hintTrigger);
-        }
-
-        return isFound;
+        else
+            Undetected?.Invoke();
     }
 
-    private IEnumerator DetectOverTime()
+    private bool IsHit(RaycastHit[] hits, int hitCount, out HintTrigger hintTrigger)
     {
-        while (true)
-        {
-            PerformIntersectionCheck();
+        hintTrigger = null;
 
-            yield return null;
-        }
+        for (int i = 0; i < hitCount; i++)
+            if (hits[i].collider.TryGetComponent(out hintTrigger))
+                return true;
+
+        return false;
     }
 }

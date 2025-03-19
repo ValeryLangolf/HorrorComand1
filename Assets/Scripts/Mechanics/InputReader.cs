@@ -11,6 +11,7 @@ public class InputReader
     private const KeyCode _shift = KeyCode.LeftShift;
     private const KeyCode _interaction = KeyCode.E;
     private const KeyCode _book = KeyCode.Tab;
+    private const KeyCode _sit = KeyCode.LeftControl;
 
     private readonly MonoBehaviour _monoBehaviour;
     private Coroutine _coroutine;
@@ -27,6 +28,9 @@ public class InputReader
 
     public bool IsShift => 
         Input.GetKey(_shift);
+
+    public bool IsSitting =>
+        Input.GetKey(_sit);
 
     public void Enable()
     {

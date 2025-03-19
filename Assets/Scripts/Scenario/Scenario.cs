@@ -24,20 +24,19 @@ public class Scenario : MonoBehaviour
         _player.Triggered -= HandleState;
     }
 
-    private void OnInteraction() =>
-        HandleState(_interaction.CurrentHintTrigger);
-
-    private void HandleState(TouchMarker interactiveTrigger)
+    private void OnInteraction()
     {
-        if (interactiveTrigger == null)
-            return;
-
-        switch (interactiveTrigger)
+        switch (_interaction.CurrentHintTrigger)
         {
             case NoteInWorldTrigger trigger:
                 TakeNote(trigger);
                 break;
         }
+    }
+
+    private void HandleState(TouchTrigger interactiveTrigger)
+    {
+        
     }
 
     private void TakeNote(NoteInWorldTrigger trigger)

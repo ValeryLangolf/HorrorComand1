@@ -12,7 +12,7 @@ public class InteractionHintIndicator : MonoBehaviour
     private void Awake()
     {
         _triggerDetector = new(_activeDistanceToObject);
-        _triggerDetector.StartDetection();
+        _triggerDetector.Enable();
         _hintIndicator.HideObject();
     }
 

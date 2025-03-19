@@ -1,16 +1,10 @@
 using System;
 using UnityEngine;
 
-[RequireComponent(typeof(Collider))]
-public class TriggerDetector : MonoBehaviour
+public class TriggerDetector : ColliderObject
 {
-    private Collider _collider;
-
     public event Action<TouchTrigger> TouchTriggered;
     public event Action<TeleportTrigger> TeleportTriggered;
-
-    private void Awake() =>
-        _collider = GetComponent<Collider>();
 
     private void OnTriggerEnter(Collider other)
     {
@@ -20,10 +14,4 @@ public class TriggerDetector : MonoBehaviour
         if (other.TryGetComponent(out TeleportTrigger teleportMarker))
             TeleportTriggered?.Invoke(teleportMarker);
     }
-
-    public void EnableCollider() =>
-        _collider.enabled = true;
-
-    public void DisableCollider() =>
-        _collider.enabled = false;
 }

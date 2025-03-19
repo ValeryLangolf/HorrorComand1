@@ -11,8 +11,6 @@ public class ForestSoundVolumeChanger : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        Debug.Log("Enter");
-
         if (_coroutine != null)
             StopCoroutine(_coroutine);
 

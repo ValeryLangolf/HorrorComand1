@@ -1,84 +1,51 @@
 using System;
-using System.Collections;
 using UnityEngine;
 
-public class GroundDetector
+public class GroundDetector : RayDetector
 {
-    private readonly RaycastHit[] _hits = new RaycastHit[5];
-    private readonly Transform _transform;
     private readonly Vector3 _direction = Vector3.down;
-    private readonly float _distance;
-    private readonly MonoBehaviour _monoBehaviour;
-    private Coroutine _coroutine;
+    private bool _isUpJumped;
 
     public event Action DownJumped;
 
-    public GroundDetector(Transform transform, float rayDistance)
+    public GroundDetector(Transform transform, float rayDistance) : base(transform, rayDistance) { }
+
+    public bool IsGrounded()
     {
-        _monoBehaviour = transform.GetComponent<MonoBehaviour>();
-        _transform = transform;
-        _distance = rayDistance;
-    }
-
-    public bool IsGrounded { get; private set; }
-
-    public Entity GroundMarker { get; private set; }
-
-    public void Enable()
-    {
-        Disable();
-        _coroutine = _monoBehaviour.StartCoroutine(DetectGroundOverTime());
-    }
-
-    public void Disable()
-    {
-        if (_coroutine != null)
-            _monoBehaviour.StopCoroutine(_coroutine);
-    }
-
-    private bool IsGroundCollision(out Collider collider)
-    {
-        collider = null;
-
-        Ray ray = new(_transform.position, _direction);
-        int hitCount = Physics.RaycastNonAlloc(ray, _hits, _distance);
+        int hitCount = GetHitCount(_direction, out RaycastHit[] hits);
 
         for (int i = 0; i < hitCount; i++)
-            if (_hits[i].collider.TryGetComponent(out Player _) == false)
-            {
-                collider = _hits[i].collider;
+            if (hits[i].collider.TryGetComponent(out Player _) == false)
                 return true;
-            }
 
         return false;
     }
 
-    private void ReadCollision()
+    public Entity GetGroundMarker()
     {
-        if (IsGroundCollision(out Collider collider) == false)
+        int hitCount = GetHitCount(_direction, out RaycastHit[] hits);
+
+        for (int i = 0; i < hitCount; i++)
+            if (hits[i].collider.TryGetComponent(out GroundMarker groundMarker))
+                return groundMarker;
+
+        return null;
+    }
+
+    protected override void HandleHits()
+    {
+        bool isGrounded = IsGrounded();
+
+        if (isGrounded == false)
         {
-            IsGrounded = false;
+            _isUpJumped = true;
             return;
         }
 
-        if (collider.TryGetComponent(out GroundMarker groundMarker))
-            GroundMarker = groundMarker;
-
-
-        if (IsGrounded)
-            return;
-
-        IsGrounded = true;
-        DownJumped?.Invoke();
-    }
-
-    private IEnumerator DetectGroundOverTime()
-    {
-        while (true)
+        if (isGrounded &&  _isUpJumped)
         {
-            ReadCollision();
-
-            yield return null;
+            _isUpJumped = false;
+            DownJumped?.Invoke();
         }
     }
 }

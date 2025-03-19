@@ -5,9 +5,9 @@ public delegate void AudioFinishedCallback();
 
 public class SoundEffectPlayer : MonoBehaviour
 {
-    [SerializeField] private SoundEffectSource _prefab;
+    [SerializeField] private AudioSourcePrefab _prefab;
 
-    private Pool<SoundEffectSource> _pool;
+    private Pool<AudioSourcePrefab> _pool;
 
     private void Awake() =>
         _pool = new(_prefab, transform);
@@ -17,7 +17,7 @@ public class SoundEffectPlayer : MonoBehaviour
         if (soundParams.Clip == null)
             throw new ArgumentNullException(soundParams.Clip.name, "AudioClipNotFound");
 
-        SoundEffectSource soundEffectSource = _pool.Get();
+        AudioSourcePrefab soundEffectSource = _pool.Get();
         soundEffectSource.Play(soundParams);
     }
 }
