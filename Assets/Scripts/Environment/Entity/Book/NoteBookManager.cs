@@ -1,15 +1,18 @@
 ﻿using System;
+using Unity.VisualScripting;
+using UnityEngine;
 
 public class NoteBookManager
 {
     private readonly PlotNote[] _notes;
 
-    private readonly Action<ButtonClickListener> _onNotePressed;
+    private readonly Action<ButtonClickInformer> _onNotePressed;
 
-    public NoteBookManager(PlotNote[] notes, Action<ButtonClickListener> onNotePressed)
+    public NoteBookManager(PlotNote[] notes, Action<ButtonClickInformer> onNotePressed)
     {
         _notes = notes;
         _onNotePressed = onNotePressed;
+        InitNotes();
         HideNotes();
     }
 
@@ -17,17 +20,17 @@ public class NoteBookManager
 
     public void SubscribeClick()
     {
-        foreach (ButtonClickListener note in _notes)
+        foreach (ButtonClickInformer note in _notes)
             note.ButtonPressed += _onNotePressed;
     }
 
     public void UnsubscribeClick()
     {
-        foreach (ButtonClickListener note in _notes)
+        foreach (ButtonClickInformer note in _notes)
             note.ButtonPressed -= _onNotePressed;
     }
 
-    public void ShowNoteBasedOnTrigger(NoteInWorldTrigger trigger)
+    public void SetActiveNote(NoteInWorldTrigger trigger)
     {
         switch (trigger)
         {
@@ -86,5 +89,19 @@ public class NoteBookManager
     {
         note.ShowObject();
         CurrentNote = note;
+    }
+
+    private void InitNotes()
+    {
+        foreach(PlotNote note in _notes)
+            InitOneNote(note);
+    }
+
+    private void InitOneNote(PlotNote note)
+    {
+        Transform defaultPosition = new GameObject($"DefPosition{note.gameObject.name}").transform;
+        defaultPosition.parent = note.transform.parent.parent;
+        defaultPosition.SetPositionAndRotation(note.transform.parent.position, note.transform.parent.rotation);
+        note.Init(defaultPosition);
     }
 }

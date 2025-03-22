@@ -23,8 +23,6 @@ public struct SoundParams
 
     public readonly AudioClip Clip => _audioClip;
 
-    public void SetClip(AudioClip audioClip)
-    {
+    public void SetClip(AudioClip audioClip) =>
         _audioClip = audioClip;
-    }
 }

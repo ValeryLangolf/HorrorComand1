@@ -3,7 +3,7 @@ using UnityEngine;
 public class Mover
 {
     private const float ForwardSpeedMultiplier = 0.5f;
-    private const float BackSpeedMultiplier = 0.4f;
+    private const float BackwardSpeedMultiplier = 0.4f;
     private const float HorizontalSpeedMultiplier = 0.4f;
 
     private readonly Transform _transform;
@@ -17,7 +17,7 @@ public class Mover
         _speed = speed;
     }
 
-    public void Move(float valueRight, float valueForward)
+    public void OnMove(float valueRight, float valueForward)
     {
         if (valueRight == 0 && valueForward == 0)
             return;
@@ -34,5 +34,5 @@ public class Mover
         speed * HorizontalSpeedMultiplier;        
 
     private float NormalizeVerticalSpeed(float speed) =>
-        speed < 0 ? speed * BackSpeedMultiplier : speed * ForwardSpeedMultiplier;
+        speed < 0 ? speed * BackwardSpeedMultiplier : speed * ForwardSpeedMultiplier;
 }

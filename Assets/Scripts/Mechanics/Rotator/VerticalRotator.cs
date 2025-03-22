@@ -34,15 +34,6 @@ public class VerticalRotator
             _monoBehaviour.StopCoroutine(_coroutine);
     }
 
-    private void Rotate()
-    {
-        _currentAngleX -= Input.GetAxis(MouseY) * _sensitivity;
-        _currentAngleX = Mathf.Clamp(_currentAngleX, MinimumVerticalAngle, MaximumVerticalAngle);
-        float currentAngleY = _transform.eulerAngles.y;
-        Quaternion rotation = Quaternion.Euler(_currentAngleX, currentAngleY, 0);
-        _transform.rotation = rotation;
-    }
-
     private IEnumerator RotateOverTime()
     {
         while (true)
@@ -51,5 +42,13 @@ public class VerticalRotator
 
             yield return null;
         }
+    }
+
+    private void Rotate()
+    {
+        _currentAngleX -= Input.GetAxis(MouseY) * _sensitivity;
+        _currentAngleX = Mathf.Clamp(_currentAngleX, MinimumVerticalAngle, MaximumVerticalAngle);
+        Quaternion rotation = Quaternion.Euler(_currentAngleX, _transform.eulerAngles.y, 0);
+        _transform.rotation = rotation;
     }
 }

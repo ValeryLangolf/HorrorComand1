@@ -44,6 +44,16 @@ public class InputReader
             _monoBehaviour.StopCoroutine(_coroutine);
     }
 
+    private IEnumerator ReadInputOverTime()
+    {
+        while (true)
+        {
+            ReadInputs();
+
+            yield return null;
+        }
+    }
+
     private void ReadInputs()
     {
         ReadJump();
@@ -75,16 +85,6 @@ public class InputReader
         float horizontalAxis = Input.GetAxis(Horizontal);
         float verticalAxis = Input.GetAxis(Vertical);
 
-        MovePressed?.Invoke(horizontalAxis, verticalAxis);        
-    }
-
-    private IEnumerator ReadInputOverTime()
-    {
-        while (true)
-        {
-            ReadInputs();
-
-            yield return null;
-        }
+        MovePressed?.Invoke(horizontalAxis, verticalAxis);
     }
 }

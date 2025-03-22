@@ -1,13 +1,11 @@
 using System;
 using UnityEngine;
 
-public delegate void NoteOutFinishedCallback();
-
 public class Book : Entity
 {
     [SerializeField] private PageBook[] _pages;
     [SerializeField] private PlotNote[] _notes;
-    [SerializeField] private ButtonArrow[] _arrow;
+    [SerializeField] private ButtonArrow[] _arrows;
     [SerializeField] private NoteInBookTarget _noteInBookTarget;
 
     private PageBookManager _pageManager;
@@ -15,12 +13,12 @@ public class Book : Entity
     private NoteBookManager _noteManager;
     private PositionAdjuster _notePositionAdjuster;
 
-    private bool _isNoteSelected;
-    private ButtonClickListener _currentNote;
-    private ButtonClickListener _noteInQueue;
-    private ButtonClickListener _arrowInQueue;
+    private ButtonClickInformer _currentNote;
+    private ButtonClickInformer _noteInQueue;
+    private ButtonClickInformer _arrowInQueue;
     private Vector3 _defaultNotePosition;
     private Quaternion _defaultNoteRotation;
+    private bool _isNoteSelected;
 
     private bool _isInit;
 
@@ -28,6 +26,9 @@ public class Book : Entity
 
     private void Awake() =>
         Init();
+
+    private void Start() =>
+        ShowInfo();
 
     private void Init()
     {
@@ -37,10 +38,9 @@ public class Book : Entity
         _isInit = true;
 
         _pageManager = new PageBookManager(_pages);
-        _buttonManager = new ButtonBookManager(_arrow, OnButtonPressed);
+        _buttonManager = new ButtonBookManager(_arrows, OnButtonArrowPressed);
         _noteManager = new NoteBookManager(_notes, OnNotePressed);
         _notePositionAdjuster = new(this, 1, 100);
-        ShowInfo();
     }
 
     private void OnEnable()
@@ -61,17 +61,17 @@ public class Book : Entity
 
         trigger.HideObject();
 
-        _noteManager.ShowNoteBasedOnTrigger(trigger);
+        _noteManager.SetActiveNote(trigger);
         _pageManager.UpdatePageIndex(trigger);
         ShowInfo();
     }
 
-    private void OnButtonPressed(ButtonClickListener button)
+    private void OnButtonArrowPressed(ButtonClickInformer button)
     {
         if (_isNoteSelected)
         {
             _arrowInQueue = button;
-            ZoomOutNote(OnButtonPressed);
+            ZoomOutNote(OnButtonArrowPressed);
         }
         else
         {
@@ -81,10 +81,10 @@ public class Book : Entity
         }
     }
 
-    private void OnButtonPressed() =>
-        OnButtonPressed(_arrowInQueue);
+    private void OnButtonArrowPressed() =>
+        OnButtonArrowPressed(_arrowInQueue);
 
-    private void OnNotePressed(ButtonClickListener button)
+    private void OnNotePressed(ButtonClickInformer button)
     {
         if (_isNoteSelected == false)
         {
@@ -105,7 +105,7 @@ public class Book : Entity
     private void OnNotePressed() =>
         OnNotePressed(_noteInQueue);
 
-    private void ZoomInOnNote(ButtonClickListener button)
+    private void ZoomInOnNote(ButtonClickInformer button)
     {
         _isNoteSelected = true;
 
@@ -120,7 +120,7 @@ public class Book : Entity
     public void ZoomInCurrentNote() =>
         ZoomInOnNote(_noteManager.CurrentNote);
 
-    public void ZoomOutNote(AdjustmentCallback callback = null)
+    public void ZoomOutNote(CallbackFinished callback = null)
     {
         if (_isNoteSelected == false)
         {
@@ -130,7 +130,9 @@ public class Book : Entity
 
         _isNoteSelected = false;
 
-        _notePositionAdjuster.Adjust(_currentNote.transform.parent, _defaultNotePosition, _defaultNoteRotation, callback);
+        PlotNote note = _currentNote as PlotNote;
+
+        _notePositionAdjuster.Adjust(_currentNote.transform.parent, note.DefaultPosition, callback);
         SoundPlayBack?.Invoke(new(SoundName.NoteClosed, transform));
     }
 

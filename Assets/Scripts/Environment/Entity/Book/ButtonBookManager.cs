@@ -3,9 +3,9 @@ using System;
 public class ButtonBookManager
 {
     private readonly ButtonArrow[] _buttons;
-    private readonly Action<ButtonClickListener> _onButtonPressed;
+    private readonly Action<ButtonClickInformer> _onButtonPressed;
 
-    public ButtonBookManager(ButtonArrow[] buttons, Action<ButtonClickListener> onButtonPressed)
+    public ButtonBookManager(ButtonArrow[] buttons, Action<ButtonClickInformer> onButtonPressed)
     {
         _buttons = buttons;
         _onButtonPressed = onButtonPressed;
@@ -36,14 +36,14 @@ public class ButtonBookManager
             ShowButton<ArrowRight>();
     }
 
-    private void ShowButton<T>() where T : ButtonClickListener
+    private void ShowButton<T>() where T : ButtonClickInformer
     {
         foreach (var button in _buttons)
             if (button is T searchButton)
                 searchButton.ShowObject();
     }
 
-    private void HideButton<T>() where T : ButtonClickListener
+    private void HideButton<T>() where T : ButtonClickInformer
     {
         foreach (var button in _buttons)
             if (button is T searchButton)

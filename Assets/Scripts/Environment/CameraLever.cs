@@ -7,15 +7,15 @@ public class CameraLever : MonoBehaviour
 
     private PositionStabilizator _cameraStabilizator;
 
-    private void Awake()
-    {
+    private void Awake() =>
         _cameraStabilizator = new(transform, _cameraFollowTarget.transform, _speed);
-        Enable();
-    }
 
-    public void Enable() =>
+    private void Start() =>
+        EnableStabilize();
+
+    public void EnableStabilize() =>
         _cameraStabilizator.Enable();
 
-    public void Disable() =>
+    public void DisableStabilize() =>
         _cameraStabilizator.Disable();
 }

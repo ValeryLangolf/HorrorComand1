@@ -3,29 +3,23 @@ using UnityEngine;
 public class InteractionHintIndicator : MonoBehaviour
 {
     [SerializeField] private HintIndicator _hintIndicator;
-    [SerializeField] private float _activeDistanceToObject;
-
-    private HintTriggerDetector _triggerDetector;
+    [SerializeField] private HintTriggerDetector _triggerDetector;
 
     public HintTrigger CurrentHintTrigger { get; private set; }
 
-    private void Awake()
-    {
-        _triggerDetector = new(_activeDistanceToObject);
-        _triggerDetector.Enable();
+    private void Awake() =>
         _hintIndicator.HideObject();
-    }
 
     private void OnEnable()
     {
         _triggerDetector.Detected += HandleDetection;
-        _triggerDetector.Undetected += HandleUnetection;
+        _triggerDetector.Undetected += HandleUndetection;
     }
 
     private void OnDisable()
     {
         _triggerDetector.Detected -= HandleDetection;
-        _triggerDetector.Undetected -= HandleUnetection;
+        _triggerDetector.Undetected -= HandleUndetection;
     }
 
     private void HandleDetection(HintTrigger trigger)
@@ -34,7 +28,7 @@ public class InteractionHintIndicator : MonoBehaviour
         _hintIndicator.ShowObject();
     }
 
-    private void HandleUnetection()
+    private void HandleUndetection()
     {
         CurrentHintTrigger = null;
         _hintIndicator.HideObject();

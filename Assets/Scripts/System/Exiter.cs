@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 public class Exiter : MonoBehaviour
 {
@@ -5,8 +6,12 @@ public class Exiter : MonoBehaviour
     [SerializeField] private ButtonEscap _buttonYes;
     [SerializeField] private ButtonEscap _buttonNo;
 
+    public bool IsPanelShowed { get; private set; }
+
+    public event Action PanelShowingChange;
+
     private void Awake() =>
-        _panelExit.HidePanel();
+        _panelExit.HideObject();
 
     private void Update()
     {
@@ -42,13 +47,15 @@ public class Exiter : MonoBehaviour
 
     private void ShowPanelExit()
     {
-        _panelExit.ShowPanel();
-        Cursor.visible = true;
+        _panelExit.ShowObject();
+        IsPanelShowed = true;
+        PanelShowingChange?.Invoke();
     }
 
     private void HidePanelExit()
     {
-        _panelExit.HidePanel();
-        Cursor.visible = false;
+        _panelExit.HideObject();
+        IsPanelShowed = false;
+        PanelShowingChange?.Invoke();
     }
 }

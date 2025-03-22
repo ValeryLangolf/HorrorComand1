@@ -1,8 +1,10 @@
 using UnityEngine;
 
+public delegate void CallbackFinished();
+
 public abstract class Entity : MonoBehaviour
 {
-    public void ShowObject() =>
+    public virtual void ShowObject() =>
         gameObject.SetActive(true);
 
     public void HideObject() =>

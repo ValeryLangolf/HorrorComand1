@@ -5,26 +5,23 @@ using UnityEngine;
 [RequireComponent(typeof(TriggerDetector))]
 public abstract class Character : Entity
 {
-    private const float GroundDetectDistance = 0.2f;
-
     [SerializeField] private Animator _animator;
     [SerializeField] private CharacterAnimationEvents _animationEvents;
-    [SerializeField] private RaySourceGroundDetector _raySourceGroundDetector;
+    [SerializeField] private GroundDetector _groundDetector;
     [SerializeField] private float _smoothValueMovement;
     [SerializeField] private float _jumpForce;
     [SerializeField] private float _moveSpeed;
-    [SerializeField] private float _runSpeedMultiplier;
+    [SerializeField] private float _runningSpeedMultiplier;
 
     private TriggerDetector _triggerDetector;
     private Rigidbody _rigidbody;
     private Jumper _jumper;
     private Mover _mover;
     private CharacterAnimatorWrapping _animatorWrapping;
-    private GroundDetector _groundDetector;
-    private SpeedSmoother _smootherHorizontalAxis;
-    private SpeedSmoother _smootherVerticalAxis;
+    private ValueSmoother _smootherHorizontalAxis;
+    private ValueSmoother _smootherVerticalAxis;
 
-    public event Action<TouchTrigger> Triggered;
+    public event Action<TouchTrigger> Touched;
     public event Action<SoundParams> SoundPlayBack;
 
     protected Animator GetAnimator => _animator;
@@ -37,33 +34,25 @@ public abstract class Character : Entity
         _jumper = new(_rigidbody, _jumpForce);
         _mover = new(_rigidbody, _moveSpeed);
         _animatorWrapping = new(_animator);
-        _groundDetector = new(_raySourceGroundDetector.transform, GroundDetectDistance);
-        _groundDetector.Enable();
         _smootherHorizontalAxis = new(_smoothValueMovement);
         _smootherVerticalAxis = new(_smoothValueMovement);
     }
 
     private void OnEnable()
     {
-        _triggerDetector.TouchTriggered += HandleTrigger;
-        _animationEvents.LeftFoodSteppedOn += OnSoundLeftStep;
-        _animationEvents.RightFoodSteppedOn += OnSoundRightStep;
-        _groundDetector.DownJumped += OnSoundDownJump;
+        _triggerDetector.Triggered += HandleTrigger;
+        _animationEvents.LeftFoodSteppedOn += PlaySoundLeftStep;
+        _animationEvents.RightFoodSteppedOn += PlaySoundRightStep;
+        _groundDetector.Landed += OnSoundDownJump;
     }
 
     private void OnDisable()
     {
-        _triggerDetector.TouchTriggered -= HandleTrigger;
-        _animationEvents.LeftFoodSteppedOn -= OnSoundLeftStep;
-        _animationEvents.RightFoodSteppedOn -= OnSoundRightStep;
-        _groundDetector.DownJumped -= OnSoundDownJump;
+        _triggerDetector.Triggered -= HandleTrigger;
+        _animationEvents.LeftFoodSteppedOn -= PlaySoundLeftStep;
+        _animationEvents.RightFoodSteppedOn -= PlaySoundRightStep;
+        _groundDetector.Landed -= OnSoundDownJump;
     }
-
-    public void EnableCollider() =>
-        _triggerDetector.EnableCollider();
-
-    public void DisableCollider() =>
-        _triggerDetector.DisableCollider();
 
     public void EnableGravity() =>
         _rigidbody.useGravity = true;
@@ -74,78 +63,78 @@ public abstract class Character : Entity
         _rigidbody.velocity = Vector3.zero;
     }
 
-    public void Jump()
+    public void OnJump()
     {
         if (_groundDetector.IsGrounded() == false)
             return;
 
-        _jumper.Jump();
+        _jumper.OnJump();
         _animatorWrapping.ShowJump();
         PlaySound(SoundName.JumpUp);
     }
 
-    public void Move(float valueRight, float valueForward, bool isSitting, bool isShift)
+    public void Move(float valueRight, float valueForward, bool isSitting, bool isShift, bool isSmooth)
     {
         if (isShift && isSitting == false && valueForward > 0)
-            valueForward *= _runSpeedMultiplier;
+            valueForward *= _runningSpeedMultiplier;
 
-        valueRight = SmoothHorizontalAxis(valueRight);
-        valueForward = SmoothVerticalAxis(valueForward);
+        if (isSmooth)
+        {
+            valueRight = _smootherHorizontalAxis.Smooth(valueRight);
+            valueForward = _smootherVerticalAxis.Smooth(valueForward);
+        }        
 
         if (isSitting)
             _animatorWrapping.ShowSittingMove(valueRight, valueForward);
         else
             _animatorWrapping.ShowMove(valueRight, valueForward);
 
-        _mover.Move(valueRight, valueForward);
+        _mover.OnMove(valueRight, valueForward);
     }
 
-    protected float SmoothHorizontalAxis(float valueRight) =>
-        _smootherHorizontalAxis.Smooth(valueRight);
-
-    protected float SmoothVerticalAxis(float valueForward) =>
-        _smootherVerticalAxis.Smooth(valueForward);
-
-    private void HandleTrigger(TouchTrigger trigger) =>
-        Triggered?.Invoke(trigger);
+    private void HandleTrigger(Collider other)
+    {
+        if (other.TryGetComponent(out TouchTrigger touchTrigger))
+            Touched?.Invoke(touchTrigger);
+    }
 
     private void OnSoundDownJump() =>
         PlaySound(SoundName.JumpDown);
 
-    private void OnSoundLeftStep()
+    private void PlaySoundLeftStep()
     {
-        SoundName name = SoundName.LeftStepGrass;
-
         switch (_groundDetector.GetGroundMarker())
         {
             case GrassMarker:
-                name = SoundName.LeftStepGrass;
+                PlaySound(SoundName.LeftStepGrass);
                 break;
 
             case WoodFloor:
-                name = SoundName.LeftStepWoodFloor;
+                PlaySound(SoundName.LeftStepWoodFloor);
+                break;
+
+            default:
+                PlaySound(SoundName.LeftStepGrass);
                 break;
         }
-
-        PlaySound(name);
     }
 
-    private void OnSoundRightStep()
+    private void PlaySoundRightStep()
     {
-        SoundName name = SoundName.LeftStepGrass;
-
         switch (_groundDetector.GetGroundMarker())
         {
             case GrassMarker:
-                name = SoundName.RightStepGrass;
+                PlaySound(SoundName.RightStepGrass);
                 break;
 
             case WoodFloor:
-                name = SoundName.RightStepWoodFloor;
+                PlaySound(SoundName.RightStepWoodFloor);
+                break;
+
+            default:
+                PlaySound(SoundName.RightStepGrass);
                 break;
         }
-
-        PlaySound(name);
     }
 
     protected void PlaySound(SoundName name) =>

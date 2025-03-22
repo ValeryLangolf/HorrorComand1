@@ -9,11 +9,10 @@ public class Pool<T> where T : MonoBehaviour, IDeactivatable<T>
     private readonly Stack<T> _elements = new();
     private readonly Action<T> _initializeCallback;
 
-    public Pool(T prefab, Transform parent, Action<T> initializeCallback = null)
+    public Pool(T prefab, Transform parent)
     {
         _prefab = prefab;
         _parent = parent;
-        _initializeCallback = initializeCallback;
     }
 
     public T Get()
@@ -35,7 +34,6 @@ public class Pool<T> where T : MonoBehaviour, IDeactivatable<T>
     private T CreateNew()
     {
         T instance = UnityEngine.Object.Instantiate(_prefab, _parent);
-        _initializeCallback?.Invoke(instance);
 
         return instance;
     }

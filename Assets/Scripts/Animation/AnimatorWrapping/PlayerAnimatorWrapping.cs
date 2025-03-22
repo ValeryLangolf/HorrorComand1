@@ -11,18 +11,9 @@ public class PlayerAnimatorWrapping : CharacterAnimatorWrapping
 
     public PlayerAnimatorWrapping(Animator animator) : base(animator) { }
 
-    public void ShowGettingUp(AnimationFinishedCallback callback = null) =>
-        Play(GettingUp, callback);
-
-    public void ShowSitting(AnimationFinishedCallback callback = null) =>
-        SetTrigger(Sitting, callback, Sitting);
-
-    public void ShowSitToStand(AnimationFinishedCallback callback = null) =>
-        SetTrigger(SitToStand, callback, SitToStand);
-
-    public void ShowBook(AnimationFinishedCallback callback = null) =>
+    public void ShowBook(CallbackFinished callback) =>
         SetBool(IsShowingBook, true, callback, ShowingBook);
 
-    public void HideBook(AnimationFinishedCallback callback = null) =>
+    public void HideBook(CallbackFinished callback = null) =>
         SetBool(IsShowingBook, false, callback, HidingBook);
 }

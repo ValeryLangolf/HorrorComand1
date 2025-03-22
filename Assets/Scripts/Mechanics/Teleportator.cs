@@ -15,46 +15,49 @@ public class Teleportator : MonoBehaviour
         _rigidbody = GetComponent<Rigidbody>();
 
     private void OnEnable() =>
-        _triggerDetector.TeleportTriggered += HandleTeleportation;
+        _triggerDetector.Triggered += HandleTeleportation;
 
     private void OnDisable() =>
-        _triggerDetector.TeleportTriggered -= HandleTeleportation;
+        _triggerDetector.Triggered -= HandleTeleportation;
 
-    private void HandleTeleportation(TeleportTrigger teleportMarker)
+    private void HandleTeleportation(Collider other)
     {
+        if (other.TryGetComponent(out TeleportTrigger teleportMarker) == false)
+            return;
+
         switch (teleportMarker)
         {
             case LeftTeleport _:
-                MoveSide(new(_terrain.Width, 0, 0));
+                TeleportSide(new(_terrain.Width, 0, 0));
                 break;
 
             case RightTeleport _:
-                MoveSide(new(-_terrain.Width, 0, 0));
+                TeleportSide(new(-_terrain.Width, 0, 0));
                 break;
 
             case UpTeleport _:
-                MoveSide(new(0, 0, -_terrain.Height));
+                TeleportSide(new(0, 0, -_terrain.Height));
                 break;
 
             case DownTeleport _:
-                MoveSide(new(0, 0, _terrain.Height));
+                TeleportSide(new(0, 0, _terrain.Height));
                 break;
 
             case UndergroundTeleport _:
-                MoveUp(new(0, Height, 0));
+                TeleportUp(new(0, Height, 0));
                 break;
 
             default:
-                throw new ArgumentOutOfRangeException("unknown");
+                throw new ArgumentOutOfRangeException("Unknown");
         }
     }
 
-    private void MoveUp(Vector3 distance)
+    private void TeleportUp(Vector3 distance)
     {
-        MoveSide(distance);
+        TeleportSide(distance);
         _rigidbody.velocity = Vector3.zero;
     }
 
-    private void MoveSide(Vector3 distance) =>
+    private void TeleportSide(Vector3 distance) =>
         transform.position += distance;
 }

@@ -17,7 +17,7 @@ public class SoundEffectPlayer : MonoBehaviour
         if (soundParams.Clip == null)
             throw new ArgumentNullException(soundParams.Clip.name, "AudioClipNotFound");
 
-        AudioSourcePrefab soundEffectSource = _pool.Get();
-        soundEffectSource.Play(soundParams);
+        AudioSourcePrefab source = _pool.Get();
+        source.Play(soundParams);
     }
 }

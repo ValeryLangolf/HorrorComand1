@@ -5,43 +5,25 @@ public class Player : Character
     [SerializeField] private Book _book;
 
     private PlayerAnimatorWrapping _animatorWrapping;
-    private bool _isShowedBook;
 
     protected override void Awake()
     {
         base.Awake();
-
-        _animatorWrapping = new(GetAnimator);
-        _book.HideObject();
+        _animatorWrapping = new(GetAnimator);        
     }
 
-    public void ShowGettingUp(AnimationFinishedCallback callback = null) =>
-        _animatorWrapping.ShowGettingUp(callback);
+    private void Start() =>
+        _book.HideObject();
 
-    public void ShowSitting(AnimationFinishedCallback callback = null) =>
-        _animatorWrapping.ShowSitting(callback);
-
-    public void ShowSitToStand(AnimationFinishedCallback callback = null) =>
-        _animatorWrapping.ShowSitToStand(callback);
-
-    public void ShowBook(AnimationFinishedCallback callback = null)
-    {
-        _book.ShowObject();
-        _isShowedBook = true;
+    public void ShowBook(CallbackFinished callback)
+    {        
         _animatorWrapping.ShowBook(callback);
         PlaySound(SoundName.BookOpened);
     }
 
-    public void HideBook()
+    public void HideBook(CallbackFinished callback)
     {
-        _isShowedBook = false;
-        _animatorWrapping.HideBook();
+        _animatorWrapping.HideBook(callback);
         PlaySound(SoundName.BookClosed);
-    }
-
-    public void DeactivateBook()
-    {
-        if (_isShowedBook == false)
-            _book.HideObject();
     }
 }

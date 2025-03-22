@@ -31,7 +31,6 @@ public class Stopwatch : MonoBehaviour
     private string Normalize(int value) =>
         value < 10 ? $"0{value}" : $"{value}";
 
-
     private IEnumerator Tick()
     {
         while(_isOn)

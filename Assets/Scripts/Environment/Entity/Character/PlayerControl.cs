@@ -10,16 +10,20 @@ public class PlayerControl : MonoBehaviour
     [SerializeField] private Book _book;
     [SerializeField] private CameraLever _cameraLever;
     [SerializeField] private CameraTarget _cameraTargetShowBook;
-    [SerializeField] private CameraTarget _cameraTargetHideBook;    
+    [SerializeField] private CameraTarget _cameraTargetHideBook;
     [SerializeField] private float _mouseSensitivity;
 
     private InputReader _inputReader;
     private VerticalRotator _verticalRotator;
     private HorizontalRotator _horizontalRotator;
     private PositionAdjuster _cameraPositionAdjuster;
+    private CallbackFinished _currentCallback;
 
-    private bool _isBookShowed;
+    public bool IsBookShowed { get; private set; }
 
+    public bool IsCanReadInput { get; private set; }
+
+    public event Action ShowingBookChanged;
     public event Action InteractionKeyPressed;
 
     private void Awake()
@@ -32,8 +36,8 @@ public class PlayerControl : MonoBehaviour
 
     private void Start()
     {
-        HideCursor();
-        EnableControl();
+        EnableInputReader();
+        IsCanReadInput = true;
     }
 
     private void OnEnable()
@@ -52,83 +56,108 @@ public class PlayerControl : MonoBehaviour
         _inputReader.BookKeyPressed -= HandleBookKeyPressed;
     }
 
-    public void EnableControl()
+    public void EnableRotate()
     {
-        _inputReader.Enable();
         _verticalRotator.Enable();
         _horizontalRotator.Enable();
     }
 
-    public void DisableControl()
+    public void DisableRotate()
     {
-        _inputReader.Disable();
         _verticalRotator.Disable();
         _horizontalRotator.Disable();
+
+        _player.Move(0, 0, false, false, false);
     }
 
-    public void ShowBook(AnimationFinishedCallback callback = null)
+    public void EnableInputReader() =>
+        _inputReader.Enable();
+
+    public void DisableInputReader() =>
+        _inputReader.Disable();
+
+    public void TakeNote(NoteInWorldTrigger note)
     {
-        _player.ShowBook(callback);
-        ShowCursor();
-        _verticalRotator.Disable();
-        _horizontalRotator.Disable();
+        _book.TakeNote(note);
+        ShowBook(_book.ZoomInCurrentNote);
+    }
+
+    private void ShowBook(CallbackFinished callback = null)
+    {
+        IsBookShowed = true;
+        IsCanReadInput = false;
+
+        ShowingBookChanged?.Invoke();
+
+        _inputReader.Disable();
+        _cameraLever.DisableStabilize();
+
+        _currentCallback = callback;
+
+        _book.ShowObject();
+        _player.ShowBook(HandleAfterShowBook);
         _cameraPositionAdjuster.Adjust(_cameraLever.transform, _cameraTargetShowBook.transform);
-        _isBookShowed = true;
+    }
+
+    private void HandleAfterShowBook()
+    {
+        IsCanReadInput = true;
+        _inputReader.Enable();
+        _currentCallback?.Invoke();
     }
 
     private void HideBook()
     {
-        _player.HideBook();
-        HideCursor();
-        _cameraPositionAdjuster.Adjust(_cameraLever.transform, _cameraTargetHideBook.transform, ReturnCameraControl);
+        _player.HideBook(HandleAfterHideBook);
+        _cameraPositionAdjuster.Adjust(_cameraLever.transform, _cameraTargetHideBook.transform, _cameraLever.EnableStabilize);
+    }
+
+    private void HandleAfterHideBook()
+    {
+        IsBookShowed = false;
+        IsCanReadInput = true;
+
+        ShowingBookChanged?.Invoke();
+
+        _inputReader.Enable();
+        _book.HideObject();
     }
 
     private void OnJump()
     {
-        if (_isBookShowed)
+        if (IsBookShowed)
             return;
 
-        _player.Jump();
+        _player.OnJump();
     }
 
     private void OnMove(float horizontalValue, float verticalValue)
     {
-        if (_isBookShowed)
+        if (IsBookShowed)
             return;
 
-        _player.Move(horizontalValue, verticalValue, _inputReader.IsSitting, _inputReader.IsShift);
+        _player.Move(horizontalValue, verticalValue, _inputReader.IsSitting, _inputReader.IsShift, true);
     }
-
-    private void InvokeInteractionKeyPressed() =>
-        InteractionKeyPressed?.Invoke();
 
     private void HandleBookKeyPressed()
     {
-        if (_isBookShowed)
+        if (IsBookShowed)
+        {
+            IsCanReadInput = false;
+            _inputReader.Disable();
+            _cameraLever.DisableStabilize();
+
             _book.ZoomOutNote(HideBook);
+        }
         else
             ShowBook();
     }
 
-    private void ReturnCameraControl()
+    private void InvokeInteractionKeyPressed()
     {
-        _verticalRotator.Enable();
-        _horizontalRotator.Enable();
-        _player.DeactivateBook();
-        _isBookShowed = false;
-    }
+        if (IsBookShowed)
+            return;
 
-    private void ShowCursor() =>
-        Cursor.visible = true;
-
-    private void HideCursor() =>
-        Cursor.visible = false;
-
-    private void OnApplicationFocus(bool focus)
-    {
-        if (focus && _isBookShowed == false)
-            HideCursor();
-        else
-            ShowCursor();
+        InteractionKeyPressed?.Invoke();
     }
 }

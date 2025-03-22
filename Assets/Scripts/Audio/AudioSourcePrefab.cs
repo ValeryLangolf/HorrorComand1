@@ -6,6 +6,7 @@ using UnityEngine;
 public class AudioSourcePrefab : MonoBehaviour, IDeactivatable<AudioSourcePrefab>
 {
     private AudioSource _source;
+    private Coroutine _coroutine;
 
     public event Action<AudioSourcePrefab> Deactivated;
 
@@ -17,10 +18,13 @@ public class AudioSourcePrefab : MonoBehaviour, IDeactivatable<AudioSourcePrefab
         _source.clip = soundParams.Clip;
         _source.Play();
 
-        StartCoroutine(ReturnToQueue(soundParams));
+        if (_coroutine != null)
+            StopCoroutine(_coroutine);
+
+        _coroutine = StartCoroutine(ReturnToPoolOverTime(soundParams));
     }
 
-    private IEnumerator ReturnToQueue(SoundParams soundParams)
+    private IEnumerator ReturnToPoolOverTime(SoundParams soundParams)
     {
         while (_source.isPlaying)
         {
@@ -29,7 +33,9 @@ public class AudioSourcePrefab : MonoBehaviour, IDeactivatable<AudioSourcePrefab
             yield return null;
         }
 
-        soundParams.Callback?.Invoke();
+        if (soundParams.Callback != null)
+            soundParams.Callback?.Invoke();
+
         Deactivated?.Invoke(this);
     }
 }

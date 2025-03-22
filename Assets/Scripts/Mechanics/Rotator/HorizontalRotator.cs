@@ -31,13 +31,6 @@ public class HorizontalRotator
             _monoBehaviour.StopCoroutine(_coroutine);
     }
 
-    private void Rotate()
-    {
-        _currentAngleY += Input.GetAxis(MouseX) * _sensitivity;
-        Quaternion rotation = Quaternion.Euler(0, _currentAngleY, 0);
-        _transform.rotation = rotation;
-    }
-
     private IEnumerator RotateOverTime()
     {
         while (true)
@@ -46,5 +39,12 @@ public class HorizontalRotator
 
             yield return null;
         }
+    }
+
+    private void Rotate()
+    {
+        _currentAngleY += Input.GetAxis(MouseX) * _sensitivity;
+        Quaternion rotation = Quaternion.Euler(0, _currentAngleY, 0);
+        _transform.rotation = rotation;
     }
 }

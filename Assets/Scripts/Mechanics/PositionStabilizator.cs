@@ -29,11 +29,6 @@ public class PositionStabilizator
             _monoBehaviour.StopCoroutine(_coroutine);
     }
 
-    private void Stabilize()
-    {
-        _transform.position = Vector3.MoveTowards(_transform.position, _target.position, _speed * Time.deltaTime);
-    }
-
     private IEnumerator StabilizeOverTime()
     {
         while (true)
@@ -43,4 +38,7 @@ public class PositionStabilizator
             yield return null;
         }
     }
+
+    private void Stabilize() =>
+        _transform.position = Vector3.MoveTowards(_transform.position, _target.position, _speed * Time.deltaTime);
 }

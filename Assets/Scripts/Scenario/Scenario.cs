@@ -15,13 +15,13 @@ public class Scenario : MonoBehaviour
     private void OnEnable()
     {
         _playerControl.InteractionKeyPressed += OnInteraction;
-        _player.Triggered += HandleState;
+        _player.Touched += HandleState;
     }
 
     private void OnDisable()
     {
         _playerControl.InteractionKeyPressed -= OnInteraction;
-        _player.Triggered -= HandleState;
+        _player.Touched -= HandleState;
     }
 
     private void OnInteraction()
@@ -29,7 +29,7 @@ public class Scenario : MonoBehaviour
         switch (_interaction.CurrentHintTrigger)
         {
             case NoteInWorldTrigger trigger:
-                TakeNote(trigger);
+                _playerControl.TakeNote(trigger);
                 break;
         }
     }
@@ -37,18 +37,5 @@ public class Scenario : MonoBehaviour
     private void HandleState(TouchTrigger interactiveTrigger)
     {
         
-    }
-
-    private void TakeNote(NoteInWorldTrigger trigger)
-    {
-        _playerControl.ShowBook(_book.ZoomInCurrentNote);
-        _book.TakeNote(trigger);
-    }
-
-    private void EnableControl()
-    {
-        _playerControl.EnableControl();
-        _player.EnableCollider();
-        _player.EnableGravity();
     }
 }

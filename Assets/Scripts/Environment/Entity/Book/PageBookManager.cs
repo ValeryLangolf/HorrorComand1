@@ -42,7 +42,7 @@ public class PageBookManager
         }
     }
 
-    public void UpdatePageIndex(ButtonClickListener button)
+    public void UpdatePageIndex(ButtonClickInformer button)
     {
         switch (button)
         {

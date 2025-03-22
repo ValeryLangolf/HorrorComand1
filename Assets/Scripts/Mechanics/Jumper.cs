@@ -12,12 +12,9 @@ public class Jumper
         _force = force;
     }
 
-    public void Jump()
+    public void OnJump()
     {
-        Vector3 velocity = _rigidbody.velocity;
-        velocity.y = 0;
-
-        _rigidbody.velocity = velocity;
+        _rigidbody.velocity = new Vector3(_rigidbody.velocity.x, 0, _rigidbody.velocity.z);
         _rigidbody.AddForce(_direction * _force, ForceMode.VelocityChange);
     }
 }
