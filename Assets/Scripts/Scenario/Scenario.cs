@@ -31,6 +31,10 @@ public class Scenario : MonoBehaviour
             case NoteInWorldTrigger trigger:
                 _playerControl.TakeNote(trigger);
                 break;
+
+            case MusicalCenter musicalCenter:
+                musicalCenter.Play();
+                break;
         }
     }
 
